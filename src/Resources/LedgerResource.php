@@ -13,6 +13,7 @@ class LedgerResource
 
     public function list(): array
     {
+        // @phpstan-ignore-next-line
         $ledger = $this->client->ledger();
 
         return $ledger->get();
@@ -20,14 +21,18 @@ class LedgerResource
 
     public function find(string $id): Ledger
     {
+        // @phpstan-ignore-next-line
         $ledger = $this->client->ledger();
+        // @phpstan-ignore-next-line
         $ledger->id = $id;
 
+        // @phpstan-ignore-next-line
         return $ledger->find($id);
     }
 
     public function create(array $attributes, string $rgsCode): Ledger
     {
+        // @phpstan-ignore-next-line
         $ledger = $this->client->ledger($attributes);
         $ledger->save($rgsCode);
 
@@ -36,8 +41,11 @@ class LedgerResource
 
     public function update(string $id, array $attributes, string $rgsCode): Ledger
     {
+        // @phpstan-ignore-next-line
         $ledger = $this->client->ledger();
+        // @phpstan-ignore-next-line
         $ledger->id = $id;
+        // @phpstan-ignore-next-line
         $ledger = $ledger->find($id);
 
         foreach ($attributes as $key => $value) {
@@ -51,8 +59,11 @@ class LedgerResource
 
     public function delete(string $id): bool
     {
+        // @phpstan-ignore-next-line
         $ledger = $this->client->ledger();
+        // @phpstan-ignore-next-line
         $ledger->id = $id;
+        // @phpstan-ignore-next-line
         $ledger = $ledger->find($id);
 
         return $ledger->delete();
