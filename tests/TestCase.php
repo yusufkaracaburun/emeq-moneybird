@@ -3,8 +3,8 @@
 namespace Emeq\Moneybird\Tests;
 
 use Emeq\Moneybird\MoneybirdServiceProvider;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 /**
  * @phpstan-template TApplication of \Illuminate\Foundation\Application
