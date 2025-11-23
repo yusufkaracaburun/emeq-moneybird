@@ -19,9 +19,13 @@ class TestCase extends Orchestra
 
     protected function tearDown(): void
     {
-        \Mockery::close();
+        if (class_exists(\Mockery::class)) {
+            \Mockery::close();
+        }
 
-        parent::tearDown();
+        if ($this->app !== null) {
+            parent::tearDown();
+        }
     }
 
     protected function getPackageProviders($app)
