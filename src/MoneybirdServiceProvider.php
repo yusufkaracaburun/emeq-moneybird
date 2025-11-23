@@ -2,13 +2,13 @@
 
 namespace Emeq\Moneybird;
 
-use Spatie\LaravelPackageTools\Package;
-use Emeq\Moneybird\Services\OAuthService;
 use Emeq\Moneybird\Commands\ConnectCommand;
-use Emeq\Moneybird\Services\MoneybirdService;
 use Emeq\Moneybird\Commands\RefreshTokensCommand;
 use Emeq\Moneybird\Commands\TestConnectionCommand;
 use Emeq\Moneybird\Http\Controllers\WebhookController;
+use Emeq\Moneybird\Services\MoneybirdService;
+use Emeq\Moneybird\Services\OAuthService;
+use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class MoneybirdServiceProvider extends PackageServiceProvider
@@ -57,7 +57,7 @@ class MoneybirdServiceProvider extends PackageServiceProvider
         // Auto-publish config if it doesn't exist
         if (! file_exists($configPath) && is_dir(config_path())) {
             try {
-                copy(__DIR__.'config/moneybird.php', $configPath);
+                copy(__DIR__.'/config/moneybird.php', $configPath);
             } catch (\Throwable $e) {
                 // Silently fail if we can't copy (e.g., permissions issue)
             }
@@ -75,7 +75,7 @@ class MoneybirdServiceProvider extends PackageServiceProvider
                 $migrationFileName = date('Y_m_d_His').'_create_moneybird_connections_table.php';
                 $targetPath = $migrationPath.'/'.$migrationFileName;
 
-                $stubContent = file_get_contents(__DIR__.'/../../database/migrations/create_moneybird_connections_table.php.stub');
+                $stubContent = file_get_contents(__DIR__.'/database/migrations/create_moneybird_connections_table.php.stub');
                 file_put_contents($targetPath, $stubContent);
             } catch (\Throwable $e) {
                 // Silently fail if we can't copy (e.g., permissions issue)
@@ -85,7 +85,7 @@ class MoneybirdServiceProvider extends PackageServiceProvider
         // Auto-publish routes if it doesn't exist
         if (! file_exists($routesPath) && is_dir(base_path('routes'))) {
             try {
-                copy(__DIR__.'routes/moneybird.php', $routesPath);
+                copy(__DIR__.'/routes/moneybird.php', $routesPath);
             } catch (\Throwable $e) {
                 // Silently fail if we can't copy (e.g., permissions issue)
             }
@@ -98,7 +98,7 @@ class MoneybirdServiceProvider extends PackageServiceProvider
         // Otherwise, load from package routes. The routes file should be included in routes/web.php
         // to ensure it gets the 'web' middleware group for session support.
         $appRoutesPath = base_path('routes/moneybird.php');
-        $packageRoutesPath = __DIR__.'routes/moneybird.php';
+        $packageRoutesPath = __DIR__.'/routes/moneybird.php';
 
         // Only load from package if app routes file doesn't exist
         // (app routes file should be included in routes/web.php)
