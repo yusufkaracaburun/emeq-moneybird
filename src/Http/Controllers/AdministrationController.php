@@ -3,6 +3,8 @@
 namespace Emeq\Moneybird\Http\Controllers;
 
 use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
+use Emeq\Moneybird\Http\Resources\AdministrationCollection;
+use Emeq\Moneybird\Http\Resources\AdministrationResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,35 +21,14 @@ class AdministrationController
             $service = $this->getService($request);
             $administrations = $service->administrations()->list();
 
-            // Ensure administrations is an array
-            if (! is_array($administrations)) {
-                $administrations = [];
-            }
-
-            // Transform administration objects to arrays
-            $data = array_map(function ($admin) {
-                if (is_object($admin)) {
-                    return [
-                        'id' => $admin->id ?? null,
-                        'name' => $admin->name ?? null,
-                        'language' => $admin->language ?? null,
-                        'currency' => $admin->currency ?? null,
-                        'time_zone' => $admin->time_zone ?? ($admin->timezone ?? null),
-                        'created_at' => isset($admin->created_at) && method_exists($admin->created_at, 'toDateTimeString')
-                            ? $admin->created_at->toDateTimeString()
-                            : ($admin->created_at ?? null),
-                        'updated_at' => isset($admin->updated_at) && method_exists($admin->updated_at, 'toDateTimeString')
-                            ? $admin->updated_at->toDateTimeString()
-                            : ($admin->updated_at ?? null),
-                    ];
-                }
-
-                return $admin;
-            }, $administrations);
-
-            return response()->json($data);
+            return (new AdministrationCollection($administrations))
+                ->response()
+                ->setStatusCode(200);
         } catch (\Exception $e) {
-            return response()->json($e->getMessage(), 500);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -67,10 +48,9 @@ class AdministrationController
                 ], 404);
             }
 
-            return response()->json([
-                'success' => true,
-                'data' => $administration,
-            ]);
+            return (new AdministrationResource($administration))
+                ->response()
+                ->setStatusCode(200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

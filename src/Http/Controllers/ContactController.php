@@ -3,6 +3,12 @@
 namespace Emeq\Moneybird\Http\Controllers;
 
 use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
+use Emeq\Moneybird\Http\Requests\FilterContactRequest;
+use Emeq\Moneybird\Http\Requests\SearchContactRequest;
+use Emeq\Moneybird\Http\Requests\StoreContactRequest;
+use Emeq\Moneybird\Http\Requests\UpdateContactRequest;
+use Emeq\Moneybird\Http\Resources\ContactCollection;
+use Emeq\Moneybird\Http\Resources\ContactResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -13,17 +19,16 @@ class ContactController
     /**
      * List all contacts.
      */
-    public function index(Request $request): JsonResponse
+    public function index(FilterContactRequest $request): JsonResponse
     {
         try {
             $service = $this->getService($request);
-            $filters = $request->only(['firstname', 'lastname', 'company_name', 'email']);
-            $contacts = $service->contacts()->list(array_filter($filters));
+            $filters = array_filter($request->validated());
+            $contacts = $service->contacts()->list($filters);
 
-            return response()->json([
-                'success' => true,
-                'data' => $contacts,
-            ]);
+            return (new ContactCollection($contacts))
+                ->response()
+                ->setStatusCode(200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -41,10 +46,9 @@ class ContactController
             $service = $this->getService($request);
             $contact = $service->contacts()->find($id);
 
-            return response()->json([
-                'success' => true,
-                'data' => $contact,
-            ]);
+            return (new ContactResource($contact))
+                ->response()
+                ->setStatusCode(200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -56,25 +60,16 @@ class ContactController
     /**
      * Search contacts by query.
      */
-    public function search(Request $request): JsonResponse
+    public function search(SearchContactRequest $request): JsonResponse
     {
         try {
             $service = $this->getService($request);
-            $query = $request->input('q');
+            $validated = $request->validated();
+            $contacts = $service->contacts()->search($validated['q']);
 
-            if (! $query) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Search query is required',
-                ], 400);
-            }
-
-            $contacts = $service->contacts()->search($query);
-
-            return response()->json([
-                'success' => true,
-                'data' => $contacts,
-            ]);
+            return (new ContactCollection($contacts))
+                ->response()
+                ->setStatusCode(200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -86,16 +81,15 @@ class ContactController
     /**
      * Create a new contact.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreContactRequest $request): JsonResponse
     {
         try {
             $service = $this->getService($request);
-            $contact = $service->contacts()->create($request->all());
+            $contact = $service->contacts()->create($request->validated());
 
-            return response()->json([
-                'success' => true,
-                'data' => $contact,
-            ], 201);
+            return (new ContactResource($contact))
+                ->response()
+                ->setStatusCode(201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -107,16 +101,15 @@ class ContactController
     /**
      * Update an existing contact.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(UpdateContactRequest $request, string $id): JsonResponse
     {
         try {
             $service = $this->getService($request);
-            $contact = $service->contacts()->update($id, $request->all());
+            $contact = $service->contacts()->update($id, $request->validated());
 
-            return response()->json([
-                'success' => true,
-                'data' => $contact,
-            ]);
+            return (new ContactResource($contact))
+                ->response()
+                ->setStatusCode(200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
