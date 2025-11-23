@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### [1.1.0] - 2025-01-23
+
+#### Added
+
+- Laravel API Resources (JsonResource) for consistent JSON responses
+  - `AdministrationResource`, `ContactResource`, `SalesInvoiceResource`, `WebhookResource`
+  - Base `MoneybirdResource` class following DRY and SOLID principles
+  - Resource Collections for list endpoints
+- Form Request classes for input validation
+  - `StoreContactRequest`, `UpdateContactRequest`, `SearchContactRequest`, `FilterContactRequest`
+  - `StoreSalesInvoiceRequest`, `UpdateSalesInvoiceRequest`, `SendSalesInvoiceRequest`, `FilterSalesInvoiceRequest`
+  - `StoreWebhookRequest`
+- Base `MoneybirdCollection` class for consistent collection responses
+
+#### Changed
+
+- Controllers now use Form Request classes instead of raw `Request` objects
+- Controllers use `$request->validated()` instead of `$request->all()`
+- Refactored resource transformation logic into base classes for better maintainability
+- Improved code organization following DRY and SOLID principles
+
+#### Fixed
+
+- Removed unnecessary null checks flagged by PHPStan
+- Fixed PHPStan static analysis errors
+
 ### [1.0.0] - 2025-01-23
 
 #### Added
