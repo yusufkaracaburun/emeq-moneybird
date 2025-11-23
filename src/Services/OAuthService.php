@@ -18,20 +18,17 @@ class OAuthService
 
     public function exchangeCodeForTokens(string $authorizationCode, ?int $userId = null, ?string $tenantId = null): MoneybirdConnection
     {
-        $client = new \GuzzleHttp\Client;
-        $response = $client->post('https://moneybird.com/oauth/token', [
-            'form_params' => [
-                'grant_type' => 'authorization_code',
-                'code' => $authorizationCode,
-                'redirect_uri' => config('moneybird.oauth.redirect_uri'),
-                'client_id' => config('moneybird.oauth.client_id'),
-                'client_secret' => config('moneybird.oauth.client_secret'),
-            ],
+        $response = \Illuminate\Support\Facades\Http::asForm()->post('https://moneybird.com/oauth/token', [
+            'grant_type' => 'authorization_code',
+            'code' => $authorizationCode,
+            'redirect_uri' => config('moneybird.oauth.redirect_uri'),
+            'client_id' => config('moneybird.oauth.client_id'),
+            'client_secret' => config('moneybird.oauth.client_secret'),
         ]);
 
-        $body = json_decode($response->getBody()->getContents(), true);
+        $body = $response->json();
 
-        if (json_last_error() !== JSON_ERROR_NONE || ! isset($body['access_token'])) {
+        if (! $response->successful() || ! isset($body['access_token'])) {
             throw new \RuntimeException('Failed to exchange authorization code for tokens');
         }
 
@@ -53,19 +50,16 @@ class OAuthService
             throw new \RuntimeException('No refresh token available');
         }
 
-        $client = new \GuzzleHttp\Client;
-        $response = $client->post('https://moneybird.com/oauth/token', [
-            'form_params' => [
-                'grant_type' => 'refresh_token',
-                'refresh_token' => $connection->refresh_token,
-                'client_id' => config('moneybird.oauth.client_id'),
-                'client_secret' => config('moneybird.oauth.client_secret'),
-            ],
+        $response = \Illuminate\Support\Facades\Http::asForm()->post('https://moneybird.com/oauth/token', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $connection->refresh_token,
+            'client_id' => config('moneybird.oauth.client_id'),
+            'client_secret' => config('moneybird.oauth.client_secret'),
         ]);
 
-        $body = json_decode($response->getBody()->getContents(), true);
+        $body = $response->json();
 
-        if (json_last_error() !== JSON_ERROR_NONE || ! isset($body['access_token'])) {
+        if (! $response->successful() || ! isset($body['access_token'])) {
             throw new \RuntimeException('Failed to refresh tokens');
         }
 

@@ -27,5 +27,11 @@
         <include>
             <directory suffix=".php">./src</directory>
         </include>
+        <exclude>
+            <directory>./src/Events</directory>
+            <directory>./src/Facades</directory>
+            <directory>./src/Resources</directory>
+            <file>./src/MoneybirdServiceProvider.php</file>
+        </exclude>
     </source>
 </phpunit>
