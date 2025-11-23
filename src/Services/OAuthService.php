@@ -39,7 +39,7 @@ class OAuthService
         // Fetch administrations to get administration_id and name
         $connection = $this->createConnection();
         $connection->setAccessToken($body['access_token']);
-        $moneybird = new \Picqer\Financials\Moneybird\Moneybird($connection);
+        $moneybird = $this->createMoneybirdClient($connection);
 
         $administrations = $moneybird->administration()->get();
 
@@ -109,5 +109,10 @@ class OAuthService
         $connection->setScopes(config('moneybird.oauth.scopes', []));
 
         return $connection;
+    }
+
+    protected function createMoneybirdClient(Connection $connection): \Picqer\Financials\Moneybird\Moneybird
+    {
+        return new \Picqer\Financials\Moneybird\Moneybird($connection);
     }
 }

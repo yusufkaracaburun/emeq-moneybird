@@ -20,7 +20,21 @@ it('can exchange authorization code for tokens', function () {
         ], 200),
     ]);
 
-    $oauthService = new OAuthService;
+    // Mock the Moneybird client to avoid real API calls
+    $mockAdministration = \Mockery::mock();
+    $mockAdministration->shouldReceive('get')->andReturn([
+        (object) ['id' => 'admin123', 'name' => 'Test Administration'],
+    ]);
+
+    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
+
+    $oauthService = \Mockery::mock(\Emeq\Moneybird\Services\OAuthService::class)->makePartial();
+    $oauthService->shouldAllowMockingProtectedMethods();
+    $oauthService->shouldReceive('createMoneybirdClient')
+        ->once()
+        ->andReturn($mockMoneybird);
+
     $connection = $oauthService->exchangeCodeForTokens('auth_code', 1, 'tenant1');
 
     expect($connection)->toBeInstanceOf(MoneybirdConnection::class)
@@ -37,12 +51,15 @@ it('throws exception when token exchange fails', function () {
 
     $oauthService = new OAuthService;
 
-    expect(fn () => $oauthService->exchangeCodeForTokens('invalid_code'))
+    expect(fn () => $oauthService->exchangeCodeForTokens('invalid_code', 1))
         ->toThrow(\RuntimeException::class);
 });
 
 it('can refresh tokens', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token',
         'refresh_token' => 'refresh_token',
         'expires_at' => now()->subHour(),
@@ -66,6 +83,9 @@ it('can refresh tokens', function () {
 
 it('throws exception when refresh token is missing', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token',
         'refresh_token' => null,
         'expires_at' => now()->subHour(),
@@ -80,6 +100,9 @@ it('throws exception when refresh token is missing', function () {
 
 it('throws exception when token refresh fails', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token',
         'refresh_token' => 'invalid_refresh_token',
         'expires_at' => now()->subHour(),
@@ -98,6 +121,9 @@ it('throws exception when token refresh fails', function () {
 
 it('handles missing refresh token in response', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token',
         'refresh_token' => 'refresh_token',
         'expires_at' => now()->subHour(),
@@ -126,8 +152,22 @@ it('handles missing expires_in in token response', function () {
         ], 200),
     ]);
 
-    $oauthService = new OAuthService;
-    $connection = $oauthService->exchangeCodeForTokens('auth_code');
+    // Mock the Moneybird client to avoid real API calls
+    $mockAdministration = \Mockery::mock();
+    $mockAdministration->shouldReceive('get')->andReturn([
+        (object) ['id' => 'admin123', 'name' => 'Test Administration'],
+    ]);
+
+    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
+
+    $oauthService = \Mockery::mock(\Emeq\Moneybird\Services\OAuthService::class)->makePartial();
+    $oauthService->shouldAllowMockingProtectedMethods();
+    $oauthService->shouldReceive('createMoneybirdClient')
+        ->once()
+        ->andReturn($mockMoneybird);
+
+    $connection = $oauthService->exchangeCodeForTokens('auth_code', 1);
 
     expect($connection->expires_at)->not->toBeNull();
 });

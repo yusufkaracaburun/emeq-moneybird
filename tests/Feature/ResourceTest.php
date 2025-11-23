@@ -10,6 +10,9 @@ beforeEach(function () {
     config()->set('moneybird.oauth.scopes', ['sales_invoices']);
 
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'expires_at' => now()->addHour(),
         'is_active' => true,

@@ -18,7 +18,25 @@ it('can connect with authorization code', function () {
         ], 200),
     ]);
 
-    $this->artisan('moneybird:connect')
+    // Mock the OAuthService to avoid real API calls
+    $mockAdministration = \Mockery::mock();
+    $mockAdministration->shouldReceive('get')->andReturn([
+        (object) ['id' => 'admin123', 'name' => 'Test Administration'],
+    ]);
+
+    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
+
+    $mockOAuthService = \Mockery::mock(\Emeq\Moneybird\Services\OAuthService::class)->makePartial();
+    $mockOAuthService->shouldAllowMockingProtectedMethods();
+    $mockOAuthService->shouldReceive('createMoneybirdClient')
+        ->once()
+        ->andReturn($mockMoneybird);
+    $mockOAuthService->shouldReceive('getAuthorizationUrl')->andReturn('https://moneybird.com/oauth/authorize');
+
+    $this->app->instance(\Emeq\Moneybird\Services\OAuthService::class, $mockOAuthService);
+
+    $this->artisan('moneybird:connect', ['--user-id' => '1'])
         ->expectsOutput('Starting Moneybird OAuth connection...')
         ->expectsQuestion('Enter the authorization code from the callback URL', 'test_code')
         ->expectsOutput('Successfully connected to Moneybird!')
@@ -26,7 +44,7 @@ it('can connect with authorization code', function () {
 });
 
 it('handles missing authorization code', function () {
-    $this->artisan('moneybird:connect')
+    $this->artisan('moneybird:connect', ['--user-id' => '1'])
         ->expectsOutput('Starting Moneybird OAuth connection...')
         ->expectsQuestion('Enter the authorization code from the callback URL', '')
         ->expectsOutput('Authorization code is required')
@@ -38,7 +56,7 @@ it('handles connection failure', function () {
         'moneybird.com/oauth/token' => Http::response(['error' => 'invalid_grant'], 400),
     ]);
 
-    $this->artisan('moneybird:connect')
+    $this->artisan('moneybird:connect', ['--user-id' => '1'])
         ->expectsOutput('Starting Moneybird OAuth connection...')
         ->expectsQuestion('Enter the authorization code from the callback URL', 'invalid_code')
         ->assertFailed();
@@ -52,6 +70,24 @@ it('can connect with user id option', function () {
             'expires_in' => 3600,
         ], 200),
     ]);
+
+    // Mock the OAuthService to avoid real API calls
+    $mockAdministration = \Mockery::mock();
+    $mockAdministration->shouldReceive('get')->andReturn([
+        (object) ['id' => 'admin123', 'name' => 'Test Administration'],
+    ]);
+
+    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
+
+    $mockOAuthService = \Mockery::mock(\Emeq\Moneybird\Services\OAuthService::class)->makePartial();
+    $mockOAuthService->shouldAllowMockingProtectedMethods();
+    $mockOAuthService->shouldReceive('createMoneybirdClient')
+        ->once()
+        ->andReturn($mockMoneybird);
+    $mockOAuthService->shouldReceive('getAuthorizationUrl')->andReturn('https://moneybird.com/oauth/authorize');
+
+    $this->app->instance(\Emeq\Moneybird\Services\OAuthService::class, $mockOAuthService);
 
     $this->artisan('moneybird:connect', ['--user-id' => '1'])
         ->expectsQuestion('Enter the authorization code from the callback URL', 'test_code')
@@ -67,7 +103,25 @@ it('can connect with tenant id option', function () {
         ], 200),
     ]);
 
-    $this->artisan('moneybird:connect', ['--tenant-id' => 'tenant1'])
+    // Mock the OAuthService to avoid real API calls
+    $mockAdministration = \Mockery::mock();
+    $mockAdministration->shouldReceive('get')->andReturn([
+        (object) ['id' => 'admin123', 'name' => 'Test Administration'],
+    ]);
+
+    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
+
+    $mockOAuthService = \Mockery::mock(\Emeq\Moneybird\Services\OAuthService::class)->makePartial();
+    $mockOAuthService->shouldAllowMockingProtectedMethods();
+    $mockOAuthService->shouldReceive('createMoneybirdClient')
+        ->once()
+        ->andReturn($mockMoneybird);
+    $mockOAuthService->shouldReceive('getAuthorizationUrl')->andReturn('https://moneybird.com/oauth/authorize');
+
+    $this->app->instance(\Emeq\Moneybird\Services\OAuthService::class, $mockOAuthService);
+
+    $this->artisan('moneybird:connect', ['--user-id' => '1', '--tenant-id' => 'tenant1'])
         ->expectsQuestion('Enter the authorization code from the callback URL', 'test_code')
         ->assertSuccessful();
 });

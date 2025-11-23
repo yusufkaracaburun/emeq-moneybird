@@ -11,6 +11,9 @@ beforeEach(function () {
 
 it('can test connection command with connection id', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'expires_at' => now()->addHour(),
         'is_active' => true,
@@ -53,6 +56,9 @@ it('handles refresh tokens command when no connections found', function () {
 
 it('handles refresh tokens command with failure', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token',
         'refresh_token' => 'refresh_token',
         'expires_at' => now()->subHour(),
@@ -70,6 +76,9 @@ it('handles refresh tokens command with failure', function () {
 
 it('handles refresh all tokens command with some failures', function () {
     $connection1 = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token1',
         'refresh_token' => 'refresh_token1',
         'expires_at' => now()->subHour(),
@@ -77,6 +86,9 @@ it('handles refresh all tokens command with some failures', function () {
     ]);
 
     $connection2 = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token2',
         'refresh_token' => 'refresh_token2',
         'expires_at' => now()->subHour(),
@@ -97,6 +109,9 @@ it('handles refresh all tokens command with some failures', function () {
 
 it('handles test connection command failure', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'expires_at' => now()->addHour(),
         'is_active' => true,
@@ -108,6 +123,9 @@ it('handles test connection command failure', function () {
 
 it('can test connection command without options', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'expires_at' => now()->addHour(),
         'is_active' => true,
@@ -138,6 +156,9 @@ it('can test connection command without options', function () {
 
 it('can refresh tokens command for specific connection', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token',
         'refresh_token' => 'refresh_token',
         'expires_at' => now()->subHour(),
@@ -159,6 +180,9 @@ it('can refresh tokens command for specific connection', function () {
 
 it('can refresh all tokens command', function () {
     $connection1 = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token1',
         'refresh_token' => 'refresh_token1',
         'expires_at' => now()->subHour(),
@@ -166,6 +190,9 @@ it('can refresh all tokens command', function () {
     ]);
 
     $connection2 = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'old_token2',
         'refresh_token' => 'refresh_token2',
         'expires_at' => now()->subHour(),

@@ -32,10 +32,18 @@ class ConnectCommand extends Command
             return self::FAILURE;
         }
 
+        $userId = $this->option('user-id') ? (int) $this->option('user-id') : null;
+
+        if (! $userId) {
+            $this->error('User ID is required. Please provide --user-id option.');
+
+            return self::FAILURE;
+        }
+
         try {
             $connection = $oauthService->exchangeCodeForTokens(
                 $authorizationCode,
-                $this->option('user-id') ? (int) $this->option('user-id') : null,
+                $userId,
                 $this->option('tenant-id')
             );
 

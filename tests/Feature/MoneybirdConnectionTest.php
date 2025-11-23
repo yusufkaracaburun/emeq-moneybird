@@ -4,6 +4,9 @@ use Emeq\Moneybird\Models\MoneybirdConnection;
 
 it('can create a moneybird connection', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'refresh_token' => 'test_refresh_token',
         'expires_at' => now()->addHour(),
@@ -17,12 +20,18 @@ it('can create a moneybird connection', function () {
 
 it('can check if connection is expired', function () {
     $expiredConnection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'expires_at' => now()->subHour(),
         'is_active' => true,
     ]);
 
     $activeConnection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'expires_at' => now()->addHour(),
         'is_active' => true,
@@ -34,6 +43,9 @@ it('can check if connection is expired', function () {
 
 it('can check if connection needs refresh', function () {
     $connectionNeedingRefresh = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'refresh_token' => 'test_refresh_token',
         'expires_at' => now()->subMinutes(10),
@@ -41,6 +53,9 @@ it('can check if connection needs refresh', function () {
     ]);
 
     $connectionNotNeedingRefresh = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'refresh_token' => 'test_refresh_token',
         'expires_at' => now()->addHour(),
@@ -53,6 +68,9 @@ it('can check if connection needs refresh', function () {
 
 it('returns false when refresh token is missing', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'refresh_token' => null,
         'expires_at' => now()->subHour(),
@@ -63,7 +81,12 @@ it('returns false when refresh token is missing', function () {
 });
 
 it('returns false when expires_at is missing', function () {
-    $connection = MoneybirdConnection::create([
+    // Since expires_at is required, we test the method behavior with a connection that has expires_at
+    // but the method checks for null internally
+    $connection = new MoneybirdConnection([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'refresh_token' => 'test_refresh_token',
         'expires_at' => null,
@@ -75,6 +98,9 @@ it('returns false when expires_at is missing', function () {
 
 it('returns false when expires_at is not past', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'refresh_token' => 'test_refresh_token',
         'expires_at' => now()->addHour(),
@@ -86,6 +112,9 @@ it('returns false when expires_at is not past', function () {
 
 it('returns true when expires_at is within 5 minutes', function () {
     $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'refresh_token' => 'test_refresh_token',
         'expires_at' => now()->addMinutes(3),
@@ -96,7 +125,12 @@ it('returns true when expires_at is within 5 minutes', function () {
 });
 
 it('returns false when expires_at is null', function () {
-    $connection = MoneybirdConnection::create([
+    // Since expires_at is required, we test the method behavior with a connection that has expires_at
+    // but the method checks for null internally
+    $connection = new MoneybirdConnection([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'refresh_token' => 'test_refresh_token',
         'expires_at' => null,
@@ -109,6 +143,8 @@ it('returns false when expires_at is null', function () {
 it('can access user relationship', function () {
     $connection = MoneybirdConnection::create([
         'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
         'access_token' => 'test_token',
         'expires_at' => now()->addHour(),
         'is_active' => true,
