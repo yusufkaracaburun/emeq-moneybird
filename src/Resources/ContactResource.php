@@ -11,6 +11,9 @@ class ContactResource
         protected Moneybird $client
     ) {}
 
+    /**
+     * List all contacts.
+     */
     public function list(array $filters = []): array
     {
         $contact = $this->client->contact();
@@ -22,6 +25,9 @@ class ContactResource
         return $contact->get();
     }
 
+    /**
+     * Find a contact by ID.
+     */
     public function find(string $id): Contact
     {
         $contact = $this->client->contact();
@@ -30,6 +36,9 @@ class ContactResource
         return $contact->find($id);
     }
 
+    /**
+     * Search contacts by query.
+     */
     public function search(string $query): array
     {
         $contact = $this->client->contact();
@@ -37,6 +46,9 @@ class ContactResource
         return $contact->search($query);
     }
 
+    /**
+     * Create a new contact.
+     */
     public function create(array $attributes): Contact
     {
         $contact = $this->client->contact($attributes);
@@ -45,6 +57,9 @@ class ContactResource
         return $contact;
     }
 
+    /**
+     * Update an existing contact.
+     */
     public function update(string $id, array $attributes): Contact
     {
         $contact = $this->client->contact();
@@ -60,6 +75,9 @@ class ContactResource
         return $contact;
     }
 
+    /**
+     * Delete a contact.
+     */
     public function delete(string $id): bool
     {
         $contact = $this->client->contact();

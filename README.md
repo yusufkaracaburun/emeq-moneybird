@@ -172,36 +172,12 @@ $invoice = $service->salesInvoices()->findByInvoiceId('2023-001');
 // Send invoice
 $service->salesInvoices()->send($invoice->id);
 
-// Work with estimates
-$estimates = $service->estimates()->list();
-$estimate = $service->estimates()->create([...]);
-
-// Work with documents
-$documents = $service->documents()->listGeneralDocuments();
-$document = $service->documents()->createGeneralDocument([...]);
-
 // Work with webhooks
 $webhooks = $service->webhooks()->list();
 $webhook = $service->webhooks()->create([
     'url' => 'https://your-app.com/moneybird/webhook',
     'enabled_events' => ['sales_invoice.created', 'contact.updated'],
 ]);
-
-// Work with custom fields
-$customFields = $service->customFields()->list();
-
-// Work with ledgers
-$ledgers = $service->ledgers()->list();
-$ledger = $service->ledgers()->create([
-    'name' => 'New Ledger',
-    'account_type' => 'expenses',
-], 'rgs-code');
-
-// Work with tax rates
-$taxRates = $service->taxRates()->list();
-
-// Work with workflows
-$workflows = $service->workflows()->list();
 ```
 
 ### Webhooks
@@ -239,14 +215,8 @@ Event::listen(ContactUpdated::class, function ($event) {
 - Extended API features:
     - Contacts (CRUD operations)
     - Sales Invoices (create, update, send, download, findByInvoiceId)
-    - Estimates (create, update, download)
-    - Documents (General and Typeless documents)
     - Webhooks (create, list, delete)
     - Administrations (list, get)
-    - Custom Fields (list, get)
-    - Ledgers (CRUD operations)
-    - Tax Rates (list, get)
-    - Workflows (list, get)
 
 ## Testing
 

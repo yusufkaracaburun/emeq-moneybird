@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Log;
 
 class WebhookController
 {
+    /**
+     * Handle incoming Moneybird webhook.
+     */
     public function handle(Request $request): Response
     {
         $payload = $request->all();
@@ -24,6 +27,9 @@ class WebhookController
         return response('OK', 200);
     }
 
+    /**
+     * Validate webhook signature.
+     */
     protected function validateWebhook(Request $request): void
     {
         $secret = config('moneybird.webhook.secret');
@@ -47,6 +53,9 @@ class WebhookController
         }
     }
 
+    /**
+     * Dispatch webhook event.
+     */
     protected function dispatchWebhookEvent(string $eventType, array $payload): void
     {
         $eventClass = $this->getEventClass($eventType);
@@ -58,6 +67,9 @@ class WebhookController
         }
     }
 
+    /**
+     * Get event class for event type.
+     */
     protected function getEventClass(string $eventType): ?string
     {
         $eventMap = [
@@ -67,9 +79,6 @@ class WebhookController
             'contact.created' => \Emeq\Moneybird\Events\ContactCreated::class,
             'contact.updated' => \Emeq\Moneybird\Events\ContactUpdated::class,
             'contact.deleted' => \Emeq\Moneybird\Events\ContactDeleted::class,
-            'estimate.created' => \Emeq\Moneybird\Events\EstimateCreated::class,
-            'estimate.updated' => \Emeq\Moneybird\Events\EstimateUpdated::class,
-            'estimate.deleted' => \Emeq\Moneybird\Events\EstimateDeleted::class,
         ];
 
         return $eventMap[$eventType] ?? null;

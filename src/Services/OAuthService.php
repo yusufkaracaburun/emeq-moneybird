@@ -10,6 +10,9 @@ use Picqer\Financials\Moneybird\Connection;
 
 class OAuthService
 {
+    /**
+     * Get OAuth authorization URL.
+     */
     public function getAuthorizationUrl(?string $state = null): string
     {
         $connection = $this->createConnection();
@@ -18,6 +21,9 @@ class OAuthService
         return $connection->getAuthUrl();
     }
 
+    /**
+     * Exchange authorization code for access tokens.
+     */
     public function exchangeCodeForTokens(string $authorizationCode, int $userId, ?string $tenantId = null, ?string $administrationId = null): MoneybirdConnection
     {
         if (! $userId) {
@@ -53,7 +59,6 @@ class OAuthService
             );
         }
 
-        // Fetch administrations to get administration_id and name
         $connection = $this->createConnection();
         $connection->setAccessToken($body['access_token']);
         $moneybird = $this->createMoneybirdClient($connection);
@@ -64,7 +69,6 @@ class OAuthService
             throw new MoneybirdException('No administrations found for this Moneybird account');
         }
 
-        // Use provided administration_id or select the first one
         $selectedAdministration = null;
         if ($administrationId) {
             $selectedAdministration = collect($administrations)->firstWhere('id', $administrationId);
@@ -89,6 +93,9 @@ class OAuthService
         return $moneybirdConnection;
     }
 
+    /**
+     * Refresh access tokens using refresh token.
+     */
     public function refreshTokens(MoneybirdConnection $connection): MoneybirdConnection
     {
         if (! $connection->refresh_token) {
@@ -132,6 +139,9 @@ class OAuthService
         return $connection->fresh();
     }
 
+    /**
+     * Create Picqer Moneybird connection instance.
+     */
     protected function createConnection(): Connection
     {
         $connection = new Connection;
@@ -143,6 +153,9 @@ class OAuthService
         return $connection;
     }
 
+    /**
+     * Create Moneybird client instance.
+     */
     protected function createMoneybirdClient(Connection $connection): \Picqer\Financials\Moneybird\Moneybird
     {
         return new \Picqer\Financials\Moneybird\Moneybird($connection);

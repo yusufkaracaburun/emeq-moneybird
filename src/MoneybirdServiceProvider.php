@@ -43,27 +43,28 @@ class MoneybirdServiceProvider extends PackageServiceProvider
         $this->autoPublishAssets();
     }
 
+    /**
+     * Auto-publish package assets during installation.
+     */
     protected function autoPublishAssets(): void
     {
-        // Only auto-publish during console commands (not web requests) and not during tests
         if (! $this->app->runningInConsole() || $this->app->runningUnitTests()) {
             return;
         }
 
         $configPath = config_path('moneybird.php');
         $migrationPath = database_path('migrations');
-        $routesPath = base_path('routes/moneybird.php');
+        $routesDir = base_path('routes/moneybird');
+        $webRoutesPath = base_path('routes/moneybird/web.php');
+        $apiRoutesPath = base_path('routes/moneybird/api.php');
 
-        // Auto-publish config if it doesn't exist
         if (! file_exists($configPath) && is_dir(config_path())) {
             try {
                 copy(__DIR__.'/../config/moneybird.php', $configPath);
             } catch (\Throwable $e) {
-                // Silently fail if we can't copy (e.g., permissions issue)
             }
         }
 
-        // Auto-publish migration if it doesn't exist
         $migrationExists = false;
         if (is_dir($migrationPath)) {
             $files = glob($migrationPath.'/*_create_moneybird_connections_table.php');
@@ -78,35 +79,54 @@ class MoneybirdServiceProvider extends PackageServiceProvider
                 $stubContent = file_get_contents(__DIR__.'/../database/migrations/create_moneybird_connections_table.php.stub');
                 file_put_contents($targetPath, $stubContent);
             } catch (\Throwable $e) {
-                // Silently fail if we can't copy (e.g., permissions issue)
             }
         }
 
-        // Auto-publish routes if it doesn't exist
-        if (! file_exists($routesPath) && is_dir(base_path('routes'))) {
+        if (is_dir(base_path('routes'))) {
             try {
-                copy(__DIR__.'/../routes/moneybird.php', $routesPath);
+                if (! is_dir($routesDir)) {
+                    mkdir($routesDir, 0755, true);
+                }
+
+                if (! file_exists($webRoutesPath)) {
+                    copy(__DIR__.'/../routes/web.php', $webRoutesPath);
+                }
+
+                if (! file_exists($apiRoutesPath)) {
+                    copy(__DIR__.'/../routes/api.php', $apiRoutesPath);
+                }
             } catch (\Throwable $e) {
-                // Silently fail if we can't copy (e.g., permissions issue)
             }
         }
     }
 
+    /**
+     * Load package routes.
+     */
     protected function loadRoutes(): void
     {
-        // Routes are loaded from routes/moneybird.php if it exists (auto-published during installation)
-        // Otherwise, load from package routes. The routes file should be included in routes/web.php
-        // to ensure it gets the 'web' middleware group for session support.
-        $appRoutesPath = base_path('routes/moneybird.php');
-        $packageRoutesPath = __DIR__.'/../routes/moneybird.php';
+        $appWebRoutesPath = base_path('routes/moneybird/web.php');
+        $packageWebRoutesPath = __DIR__.'/../routes/web.php';
 
-        // Only load from package if app routes file doesn't exist
-        // (app routes file should be included in routes/web.php)
-        if (! file_exists($appRoutesPath) && file_exists($packageRoutesPath)) {
-            $this->loadRoutesFrom($packageRoutesPath);
+        if (file_exists($appWebRoutesPath)) {
+            $this->loadRoutesFrom($appWebRoutesPath);
+        } elseif (file_exists($packageWebRoutesPath)) {
+            $this->loadRoutesFrom($packageWebRoutesPath);
         }
 
-        // Always register webhook route
+        $appApiRoutesPath = base_path('routes/moneybird/api.php');
+        $packageApiRoutesPath = __DIR__.'/../routes/api.php';
+
+        if (file_exists($appApiRoutesPath)) {
+            $this->app['router']->prefix('api')->group(function () use ($appApiRoutesPath): void {
+                $this->loadRoutesFrom($appApiRoutesPath);
+            });
+        } elseif (file_exists($packageApiRoutesPath)) {
+            $this->app['router']->prefix('api')->group(function () use ($packageApiRoutesPath): void {
+                $this->loadRoutesFrom($packageApiRoutesPath);
+            });
+        }
+
         $routePath = config('moneybird.webhook.route', '/moneybird/webhook');
 
         if (str_starts_with($routePath, '/')) {

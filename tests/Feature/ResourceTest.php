@@ -40,18 +40,6 @@ it('can get sales invoices resource', function () {
     expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\SalesInvoiceResource::class);
 });
 
-it('can get estimates resource', function () {
-    $resource = $this->service->estimates();
-
-    expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\EstimateResource::class);
-});
-
-it('can get documents resource', function () {
-    $resource = $this->service->documents();
-
-    expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\DocumentResource::class);
-});
-
 it('can get webhooks resource', function () {
     $resource = $this->service->webhooks();
 

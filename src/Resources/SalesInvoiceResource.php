@@ -13,6 +13,9 @@ class SalesInvoiceResource
         protected Moneybird $client
     ) {}
 
+    /**
+     * List all sales invoices.
+     */
     public function list(array $filters = []): array
     {
         $invoice = $this->client->salesInvoice();
@@ -24,6 +27,9 @@ class SalesInvoiceResource
         return $invoice->get();
     }
 
+    /**
+     * Find a sales invoice by ID.
+     */
     public function find(string $id): SalesInvoice
     {
         $invoice = $this->client->salesInvoice();
@@ -32,6 +38,9 @@ class SalesInvoiceResource
         return $invoice->find($id);
     }
 
+    /**
+     * Find a sales invoice by invoice ID.
+     */
     public function findByInvoiceId(string $invoiceId): SalesInvoice
     {
         $invoices = $this->client->salesInvoice()->filter(['invoice_id' => $invoiceId]);
@@ -43,6 +52,9 @@ class SalesInvoiceResource
         return $invoices[0];
     }
 
+    /**
+     * Create a new sales invoice.
+     */
     public function create(array $attributes): SalesInvoice
     {
         $invoice = $this->client->salesInvoice($attributes);
@@ -51,6 +63,9 @@ class SalesInvoiceResource
         return $invoice;
     }
 
+    /**
+     * Update an existing sales invoice.
+     */
     public function update(string $id, array $attributes): SalesInvoice
     {
         $invoice = $this->client->salesInvoice();
@@ -66,6 +81,9 @@ class SalesInvoiceResource
         return $invoice;
     }
 
+    /**
+     * Delete a sales invoice.
+     */
     public function delete(string $id): bool
     {
         $invoice = $this->client->salesInvoice();
@@ -75,6 +93,9 @@ class SalesInvoiceResource
         return $invoice->delete();
     }
 
+    /**
+     * Send a sales invoice.
+     */
     public function send(string $id, string|SendInvoiceOptions $deliveryMethodOrOptions = SendInvoiceOptions::METHOD_EMAIL): SalesInvoice
     {
         $invoice = $this->client->salesInvoice();
@@ -85,6 +106,9 @@ class SalesInvoiceResource
         return $invoice;
     }
 
+    /**
+     * Download a sales invoice as PDF.
+     */
     public function downloadPdf(string $id): string
     {
         $invoice = $this->client->salesInvoice();
@@ -94,6 +118,9 @@ class SalesInvoiceResource
         return $invoice->downloadPdf();
     }
 
+    /**
+     * Download a sales invoice as UBL.
+     */
     public function downloadUbl(string $id): string
     {
         $invoice = $this->client->salesInvoice();

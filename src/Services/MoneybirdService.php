@@ -5,14 +5,8 @@ namespace Emeq\Moneybird\Services;
 use Emeq\Moneybird\Models\MoneybirdConnection;
 use Emeq\Moneybird\Resources\AdministrationResource;
 use Emeq\Moneybird\Resources\ContactResource;
-use Emeq\Moneybird\Resources\CustomFieldResource;
-use Emeq\Moneybird\Resources\DocumentResource;
-use Emeq\Moneybird\Resources\EstimateResource;
-use Emeq\Moneybird\Resources\LedgerResource;
 use Emeq\Moneybird\Resources\SalesInvoiceResource;
-use Emeq\Moneybird\Resources\TaxRateResource;
 use Emeq\Moneybird\Resources\WebhookResource;
-use Emeq\Moneybird\Resources\WorkflowResource;
 use Picqer\Financials\Moneybird\Connection;
 use Picqer\Financials\Moneybird\Moneybird;
 
@@ -26,6 +20,9 @@ class MoneybirdService
         protected OAuthService $oauthService
     ) {}
 
+    /**
+     * Set the Moneybird connection to use.
+     */
     public function connection(?int $userId = null, ?string $tenantId = null, ?int $connectionId = null): self
     {
         $query = MoneybirdConnection::query()->where('is_active', true);
@@ -33,7 +30,7 @@ class MoneybirdService
         if ($connectionId) {
             $this->connection = $query->findOrFail($connectionId);
         } elseif ($userId || $tenantId) {
-            $query->where(function ($q) use ($userId, $tenantId) {
+            $query->where(function (\Illuminate\Database\Eloquent\Builder $q) use ($userId, $tenantId): void {
                 if ($userId) {
                     $q->where('user_id', $userId);
                 }
@@ -52,6 +49,9 @@ class MoneybirdService
         return $this;
     }
 
+    /**
+     * Set connection directly.
+     */
     public function setConnection(MoneybirdConnection $connection): self
     {
         $this->connection = $connection;
@@ -60,6 +60,9 @@ class MoneybirdService
         return $this;
     }
 
+    /**
+     * Get the Moneybird client instance.
+     */
     public function getClient(): Moneybird
     {
         if ($this->client) {
@@ -76,56 +79,41 @@ class MoneybirdService
         return $this->client;
     }
 
+    /**
+     * Get administrations resource.
+     */
     public function administrations(): AdministrationResource
     {
         return new AdministrationResource($this->getClient());
     }
 
+    /**
+     * Get contacts resource.
+     */
     public function contacts(): ContactResource
     {
         return new ContactResource($this->getClient());
     }
 
+    /**
+     * Get sales invoices resource.
+     */
     public function salesInvoices(): SalesInvoiceResource
     {
         return new SalesInvoiceResource($this->getClient());
     }
 
-    public function estimates(): EstimateResource
-    {
-        return new EstimateResource($this->getClient());
-    }
-
-    public function documents(): DocumentResource
-    {
-        return new DocumentResource($this->getClient());
-    }
-
+    /**
+     * Get webhooks resource.
+     */
     public function webhooks(): WebhookResource
     {
         return new WebhookResource($this->getClient());
     }
 
-    public function customFields(): CustomFieldResource
-    {
-        return new CustomFieldResource($this->getClient());
-    }
-
-    public function ledgers(): LedgerResource
-    {
-        return new LedgerResource($this->getClient());
-    }
-
-    public function taxRates(): TaxRateResource
-    {
-        return new TaxRateResource($this->getClient());
-    }
-
-    public function workflows(): WorkflowResource
-    {
-        return new WorkflowResource($this->getClient());
-    }
-
+    /**
+     * Ensure access tokens are valid and refresh if needed.
+     */
     protected function ensureValidTokens(): void
     {
         if (! $this->connection) {
@@ -138,6 +126,9 @@ class MoneybirdService
         }
     }
 
+    /**
+     * Create Picqer Moneybird connection instance.
+     */
     protected function createPicqerConnection(): Connection
     {
         $connection = new Connection;

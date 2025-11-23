@@ -10,8 +10,6 @@ return [
         'redirect_uri' => env('MONEYBIRD_REDIRECT_URI', null),
         'scopes' => [
             'sales_invoices',
-            'documents',
-            'estimates',
             'bank',
             'time_entries',
             'settings',

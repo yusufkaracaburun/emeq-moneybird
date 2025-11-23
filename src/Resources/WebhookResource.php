@@ -11,6 +11,9 @@ class WebhookResource
         protected Moneybird $client
     ) {}
 
+    /**
+     * List all webhooks.
+     */
     public function list(): array
     {
         $webhook = $this->client->webhook();
@@ -18,6 +21,9 @@ class WebhookResource
         return $webhook->get();
     }
 
+    /**
+     * Create a new webhook.
+     */
     public function create(array $attributes): Webhook
     {
         $webhook = $this->client->webhook($attributes);
@@ -26,6 +32,9 @@ class WebhookResource
         return $webhook;
     }
 
+    /**
+     * Delete a webhook.
+     */
     public function delete(string $id): bool
     {
         $webhook = $this->client->webhook();
