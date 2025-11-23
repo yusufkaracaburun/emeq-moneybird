@@ -12,7 +12,6 @@ class TaxRateResource
 
     public function list(array $filters = []): array
     {
-        // @phpstan-ignore-next-line
         $taxRate = $this->client->taxRate();
 
         if (! empty($filters)) {
@@ -25,7 +24,6 @@ class TaxRateResource
 
     public function find(string $id)
     {
-        // @phpstan-ignore-next-line
         $taxRate = $this->client->taxRate();
         // @phpstan-ignore-next-line
         $taxRate->id = $id;

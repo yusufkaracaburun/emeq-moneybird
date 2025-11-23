@@ -12,7 +12,6 @@ class WorkflowResource
 
     public function list(): array
     {
-        // @phpstan-ignore-next-line
         $workflow = $this->client->workflow();
 
         return $workflow->get();
@@ -20,7 +19,6 @@ class WorkflowResource
 
     public function find(string $id)
     {
-        // @phpstan-ignore-next-line
         $workflow = $this->client->workflow();
         // @phpstan-ignore-next-line
         $workflow->id = $id;

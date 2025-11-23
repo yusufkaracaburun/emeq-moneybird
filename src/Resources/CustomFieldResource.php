@@ -12,7 +12,6 @@ class CustomFieldResource
 
     public function list(): array
     {
-        // @phpstan-ignore-next-line
         $customField = $this->client->customField();
 
         return $customField->get();
@@ -20,7 +19,6 @@ class CustomFieldResource
 
     public function find(string $id)
     {
-        // @phpstan-ignore-next-line
         $customField = $this->client->customField();
         // @phpstan-ignore-next-line
         $customField->id = $id;

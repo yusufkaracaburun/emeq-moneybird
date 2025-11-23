@@ -2,7 +2,7 @@
 
 namespace Emeq\Moneybird\Resources;
 
-use Picqer\Financials\Moneybird\Entities\Ledger;
+use Picqer\Financials\Moneybird\Entities\LedgerAccount;
 use Picqer\Financials\Moneybird\Moneybird;
 
 class LedgerResource
@@ -19,39 +19,40 @@ class LedgerResource
         return $ledger->get();
     }
 
-    public function find(string $id): Ledger
+    public function find(string $id): LedgerAccount
     {
         // @phpstan-ignore-next-line
         $ledger = $this->client->ledger();
-        // @phpstan-ignore-next-line
         $ledger->id = $id;
 
-        // @phpstan-ignore-next-line
+        /** @var LedgerAccount */
         return $ledger->find($id);
     }
 
-    public function create(array $attributes, string $rgsCode): Ledger
+    public function create(array $attributes, string $rgsCode): LedgerAccount
     {
+        /** @var LedgerAccount */
         // @phpstan-ignore-next-line
         $ledger = $this->client->ledger($attributes);
+        // @phpstan-ignore-next-line
         $ledger->save($rgsCode);
 
         return $ledger;
     }
 
-    public function update(string $id, array $attributes, string $rgsCode): Ledger
+    public function update(string $id, array $attributes, string $rgsCode): LedgerAccount
     {
         // @phpstan-ignore-next-line
         $ledger = $this->client->ledger();
-        // @phpstan-ignore-next-line
         $ledger->id = $id;
-        // @phpstan-ignore-next-line
+        /** @var LedgerAccount */
         $ledger = $ledger->find($id);
 
         foreach ($attributes as $key => $value) {
             $ledger->$key = $value;
         }
 
+        // @phpstan-ignore-next-line
         $ledger->save($rgsCode);
 
         return $ledger;
@@ -61,9 +62,8 @@ class LedgerResource
     {
         // @phpstan-ignore-next-line
         $ledger = $this->client->ledger();
-        // @phpstan-ignore-next-line
         $ledger->id = $id;
-        // @phpstan-ignore-next-line
+        /** @var LedgerAccount */
         $ledger = $ledger->find($id);
 
         return $ledger->delete();
