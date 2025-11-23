@@ -37,4 +37,3 @@ class ConnectionErrorException extends MoneybirdException
         return $this;
     }
 }
-

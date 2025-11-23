@@ -29,4 +29,3 @@ class WorkflowResource
         return $workflow->find($id);
     }
 }
-

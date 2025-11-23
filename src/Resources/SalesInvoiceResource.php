@@ -2,10 +2,10 @@
 
 namespace Emeq\Moneybird\Resources;
 
-use Picqer\Financials\Moneybird\Moneybird;
 use Emeq\Moneybird\Exceptions\MoneybirdException;
 use Picqer\Financials\Moneybird\Entities\SalesInvoice;
 use Picqer\Financials\Moneybird\Entities\SalesInvoice\SendInvoiceOptions;
+use Picqer\Financials\Moneybird\Moneybird;
 
 class SalesInvoiceResource
 {

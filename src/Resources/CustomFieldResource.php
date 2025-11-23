@@ -29,4 +29,3 @@ class CustomFieldResource
         return $customField->find($id);
     }
 }
-
