@@ -55,8 +55,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-scripts --with-all-dependencies
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-interaction --no-update
+          if [ "${{ matrix.stability }}" == "prefer-lowest" ]; then
+            composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction --no-scripts
+          else
+            composer update --prefer-dist --no-interaction --no-scripts
+          fi
           composer run prepare
 
       - name: List Installed Dependencies
