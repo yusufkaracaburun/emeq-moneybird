@@ -18,6 +18,7 @@
             <directory>./src/Facades</directory>
             <directory>./src/Resources</directory>
             <directory>./src/Exceptions</directory>
+            <directory>./src/Commands</directory>
             <file>./src/MoneybirdServiceProvider.php</file>
         </exclude>
     </source>

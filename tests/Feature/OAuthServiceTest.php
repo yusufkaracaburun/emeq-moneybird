@@ -261,7 +261,6 @@ it('handles missing expires_in in token response', function () {
         ], 200),
     ]);
 
-    // Mock the Moneybird client to avoid real API calls
     $mockAdministration = \Mockery::mock();
     $mockAdministration->shouldReceive('get')->andReturn([
         (object) ['id' => 'admin123', 'name' => 'Test Administration'],
