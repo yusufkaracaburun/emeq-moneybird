@@ -41,20 +41,49 @@ MONEYBIRD_API_TIMEOUT=30
 ### OAuth Setup
 
 1. Create a Moneybird application at [https://moneybird.com/oauth/applications](https://moneybird.com/oauth/applications)
-2. Set your redirect URI to match `MONEYBIRD_REDIRECT_URI`
+2. Set your redirect URI to match `MONEYBIRD_REDIRECT_URI` (e.g., `https://your-app.com/moneybird/auth/callback`)
 3. Copy the Client ID and Client Secret to your `.env` file
 
 ## Usage
 
 ### Connecting to Moneybird
 
-Use the artisan command to connect:
+#### Via Routes (Recommended for Web Applications)
+
+The package provides web routes for easy OAuth connection:
+
+1. **Start the connection**: Visit `/moneybird/connect` while authenticated
+   - This route requires authentication (`auth` middleware)
+   - It will redirect you to Moneybird's authorization page
+
+2. **Handle the callback**: After authorization, Moneybird redirects to `/moneybird/auth/callback`
+   - The callback route automatically exchanges the authorization code for tokens
+   - On success, you'll be redirected to your dashboard with a success message
+   - On error, you'll be redirected with an error message
+
+**Example in your Blade template:**
+
+```blade
+<a href="{{ route('moneybird.connect') }}" class="btn btn-primary">
+    Connect to Moneybird
+</a>
+```
+
+**Example redirect in your controller:**
+
+```php
+return redirect()->route('moneybird.connect');
+```
+
+#### Via Artisan Command
+
+Use the artisan command for CLI-based connections:
 
 ```bash
 php artisan moneybird:connect --user-id=1
 ```
 
-Or programmatically:
+#### Programmatically
 
 ```php
 use Emeq\Moneybird\Services\OAuthService;
@@ -65,6 +94,41 @@ $authorizationUrl = $oauthService->getAuthorizationUrl();
 // Redirect user to $authorizationUrl
 // After authorization, exchange the code:
 $connection = $oauthService->exchangeCodeForTokens($authorizationCode, $userId);
+```
+
+### Testing the Connection
+
+#### Via Routes
+
+After connecting, you can test the connection by accessing any route that uses the Moneybird service. The package will automatically handle token refresh if needed.
+
+**Example test route in your application:**
+
+```php
+Route::middleware('auth')->get('/moneybird/test', function () {
+    $userId = auth()->id();
+    $service = \Emeq\Moneybird\Facades\Moneybird::connection($userId);
+    
+    try {
+        $administrations = $service->administrations()->list();
+        return response()->json([
+            'success' => true,
+            'message' => 'Connection successful!',
+            'administrations' => $administrations,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Connection failed: ' . $e->getMessage(),
+        ], 500);
+    }
+});
+```
+
+#### Via Artisan Command
+
+```bash
+php artisan moneybird:test-connection --user-id=1
 ```
 
 ### Using the Moneybird Service

@@ -2,13 +2,13 @@
 
 namespace Emeq\Moneybird;
 
+use Spatie\LaravelPackageTools\Package;
+use Emeq\Moneybird\Services\OAuthService;
 use Emeq\Moneybird\Commands\ConnectCommand;
+use Emeq\Moneybird\Services\MoneybirdService;
 use Emeq\Moneybird\Commands\RefreshTokensCommand;
 use Emeq\Moneybird\Commands\TestConnectionCommand;
 use Emeq\Moneybird\Http\Controllers\WebhookController;
-use Emeq\Moneybird\Services\MoneybirdService;
-use Emeq\Moneybird\Services\OAuthService;
-use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class MoneybirdServiceProvider extends PackageServiceProvider
@@ -52,11 +52,12 @@ class MoneybirdServiceProvider extends PackageServiceProvider
 
         $configPath = config_path('moneybird.php');
         $migrationPath = database_path('migrations');
+        $routesPath = base_path('routes/moneybird.php');
 
         // Auto-publish config if it doesn't exist
         if (! file_exists($configPath) && is_dir(config_path())) {
             try {
-                copy(__DIR__.'/../../config/moneybird.php', $configPath);
+                copy(__DIR__.'config/moneybird.php', $configPath);
             } catch (\Throwable $e) {
                 // Silently fail if we can't copy (e.g., permissions issue)
             }
@@ -80,12 +81,32 @@ class MoneybirdServiceProvider extends PackageServiceProvider
                 // Silently fail if we can't copy (e.g., permissions issue)
             }
         }
+
+        // Auto-publish routes if it doesn't exist
+        if (! file_exists($routesPath) && is_dir(base_path('routes'))) {
+            try {
+                copy(__DIR__.'routes/moneybird.php', $routesPath);
+            } catch (\Throwable $e) {
+                // Silently fail if we can't copy (e.g., permissions issue)
+            }
+        }
     }
 
     protected function loadRoutes(): void
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/moneybird.php');
+        // Routes are loaded from routes/moneybird.php if it exists (auto-published during installation)
+        // Otherwise, load from package routes. The routes file should be included in routes/web.php
+        // to ensure it gets the 'web' middleware group for session support.
+        $appRoutesPath = base_path('routes/moneybird.php');
+        $packageRoutesPath = __DIR__.'routes/moneybird.php';
 
+        // Only load from package if app routes file doesn't exist
+        // (app routes file should be included in routes/web.php)
+        if (! file_exists($appRoutesPath)) {
+            $this->loadRoutesFrom($packageRoutesPath);
+        }
+
+        // Always register webhook route
         $routePath = config('moneybird.webhook.route', '/moneybird/webhook');
 
         if (str_starts_with($routePath, '/')) {
