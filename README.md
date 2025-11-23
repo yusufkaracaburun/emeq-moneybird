@@ -35,6 +35,7 @@ MONEYBIRD_CLIENT_ID=your_client_id
 MONEYBIRD_CLIENT_SECRET=your_client_secret
 MONEYBIRD_REDIRECT_URI=https://your-app.com/moneybird/callback
 MONEYBIRD_WEBHOOK_SECRET=your_webhook_secret
+MONEYBIRD_API_TIMEOUT=30
 ```
 
 ### OAuth Setup
@@ -101,6 +102,9 @@ $invoice = $service->salesInvoices()->create([
     ],
 ]);
 
+// Find invoice by invoice ID (invoice number)
+$invoice = $service->salesInvoices()->findByInvoiceId('2023-001');
+
 // Send invoice
 $service->salesInvoices()->send($invoice->id);
 
@@ -118,6 +122,22 @@ $webhook = $service->webhooks()->create([
     'url' => 'https://your-app.com/moneybird/webhook',
     'enabled_events' => ['sales_invoice.created', 'contact.updated'],
 ]);
+
+// Work with custom fields
+$customFields = $service->customFields()->list();
+
+// Work with ledgers
+$ledgers = $service->ledgers()->list();
+$ledger = $service->ledgers()->create([
+    'name' => 'New Ledger',
+    'account_type' => 'expenses',
+], 'rgs-code');
+
+// Work with tax rates
+$taxRates = $service->taxRates()->list();
+
+// Work with workflows
+$workflows = $service->workflows()->list();
 ```
 
 ### Webhooks
@@ -154,11 +174,15 @@ Event::listen(ContactUpdated::class, function ($event) {
 - Support for multiple administrations
 - Extended API features:
     - Contacts (CRUD operations)
-    - Sales Invoices (create, update, send, download)
+    - Sales Invoices (create, update, send, download, findByInvoiceId)
     - Estimates (create, update, download)
     - Documents (General and Typeless documents)
     - Webhooks (create, list, delete)
     - Administrations (list, get)
+    - Custom Fields (list, get)
+    - Ledgers (CRUD operations)
+    - Tax Rates (list, get)
+    - Workflows (list, get)
 
 ## Testing
 

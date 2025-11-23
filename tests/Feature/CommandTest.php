@@ -70,7 +70,7 @@ it('handles refresh tokens command with failure', function () {
     ]);
 
     $this->artisan('moneybird:refresh-tokens', ['--connection-id' => $connection->id])
-        ->expectsOutput('Failed to refresh tokens: Failed to refresh tokens')
+        ->expectsOutputToContain('Failed to refresh tokens')
         ->assertFailed();
 });
 
@@ -103,7 +103,7 @@ it('handles refresh all tokens command with some failures', function () {
 
     $this->artisan('moneybird:refresh-tokens', ['--all' => true])
         ->expectsOutput("✓ Connection {$connection1->id} refreshed successfully")
-        ->expectsOutput("✗ Connection {$connection2->id} failed: Failed to refresh tokens")
+        ->expectsOutputToContain("✗ Connection {$connection2->id} failed:")
         ->assertFailed();
 });
 

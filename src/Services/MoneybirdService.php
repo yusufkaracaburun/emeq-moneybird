@@ -5,10 +5,14 @@ namespace Emeq\Moneybird\Services;
 use Emeq\Moneybird\Models\MoneybirdConnection;
 use Emeq\Moneybird\Resources\AdministrationResource;
 use Emeq\Moneybird\Resources\ContactResource;
+use Emeq\Moneybird\Resources\CustomFieldResource;
 use Emeq\Moneybird\Resources\DocumentResource;
 use Emeq\Moneybird\Resources\EstimateResource;
+use Emeq\Moneybird\Resources\LedgerResource;
 use Emeq\Moneybird\Resources\SalesInvoiceResource;
+use Emeq\Moneybird\Resources\TaxRateResource;
 use Emeq\Moneybird\Resources\WebhookResource;
+use Emeq\Moneybird\Resources\WorkflowResource;
 use Picqer\Financials\Moneybird\Connection;
 use Picqer\Financials\Moneybird\Moneybird;
 
@@ -63,7 +67,7 @@ class MoneybirdService
         }
 
         if (! $this->connection) {
-            throw new \RuntimeException('No Moneybird connection set');
+            throw new \Emeq\Moneybird\Exceptions\MoneybirdException('No Moneybird connection set');
         }
 
         $connection = $this->createPicqerConnection();
@@ -100,6 +104,26 @@ class MoneybirdService
     public function webhooks(): WebhookResource
     {
         return new WebhookResource($this->getClient());
+    }
+
+    public function customFields(): CustomFieldResource
+    {
+        return new CustomFieldResource($this->getClient());
+    }
+
+    public function ledgers(): LedgerResource
+    {
+        return new LedgerResource($this->getClient());
+    }
+
+    public function taxRates(): TaxRateResource
+    {
+        return new TaxRateResource($this->getClient());
+    }
+
+    public function workflows(): WorkflowResource
+    {
+        return new WorkflowResource($this->getClient());
     }
 
     protected function ensureValidTokens(): void

@@ -44,6 +44,24 @@ it('can exchange authorization code for tokens', function () {
         ->and($connection->tenant_id)->toBe('tenant1');
 });
 
+it('can create moneybird client', function () {
+    $oauthService = new OAuthService;
+    
+    $connection = new \Picqer\Financials\Moneybird\Connection;
+    $connection->setClientId('test_client_id');
+    $connection->setClientSecret('test_secret');
+    $connection->setRedirectUrl('https://example.com/callback');
+    $connection->setAccessToken('test_token');
+
+    $reflection = new \ReflectionClass($oauthService);
+    $method = $reflection->getMethod('createMoneybirdClient');
+    $method->setAccessible(true);
+
+    $client = $method->invoke($oauthService, $connection);
+
+    expect($client)->toBeInstanceOf(\Picqer\Financials\Moneybird\Moneybird::class);
+});
+
 it('throws exception when token exchange fails', function () {
     Http::fake([
         'moneybird.com/oauth/token' => Http::response(['error' => 'invalid_grant'], 400),
@@ -52,7 +70,98 @@ it('throws exception when token exchange fails', function () {
     $oauthService = new OAuthService;
 
     expect(fn () => $oauthService->exchangeCodeForTokens('invalid_code', 1))
-        ->toThrow(\RuntimeException::class);
+        ->toThrow(\Emeq\Moneybird\Exceptions\MoneybirdException::class);
+});
+
+it('throws exception when user id is missing', function () {
+    $oauthService = new OAuthService;
+
+    expect(fn () => $oauthService->exchangeCodeForTokens('code', 0))
+        ->toThrow(\Emeq\Moneybird\Exceptions\MoneybirdException::class, 'User ID is required');
+});
+
+it('throws connection error exception when connection fails during token exchange', function () {
+    Http::fake(function () {
+        throw new \Illuminate\Http\Client\ConnectionException('Connection timeout');
+    });
+
+    $oauthService = new OAuthService;
+
+    expect(fn () => $oauthService->exchangeCodeForTokens('code', 1))
+        ->toThrow(\Emeq\Moneybird\Exceptions\ConnectionErrorException::class);
+});
+
+it('throws exception when no administrations found', function () {
+    Http::fake([
+        'moneybird.com/oauth/token' => Http::response([
+            'access_token' => 'new_access_token',
+            'refresh_token' => 'new_refresh_token',
+            'expires_in' => 3600,
+        ], 200),
+    ]);
+
+    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockAdministration = \Mockery::mock();
+    $mockAdministration->shouldReceive('get')->andReturn([]);
+
+    $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
+
+    $oauthService = \Mockery::mock(\Emeq\Moneybird\Services\OAuthService::class)->makePartial();
+    $oauthService->shouldAllowMockingProtectedMethods();
+    $oauthService->shouldReceive('createMoneybirdClient')
+        ->once()
+        ->andReturn($mockMoneybird);
+
+    expect(fn () => $oauthService->exchangeCodeForTokens('code', 1))
+        ->toThrow(\Emeq\Moneybird\Exceptions\MoneybirdException::class, 'No administrations found');
+});
+
+it('throws exception when specified administration not found', function () {
+    Http::fake([
+        'moneybird.com/oauth/token' => Http::response([
+            'access_token' => 'new_access_token',
+            'refresh_token' => 'new_refresh_token',
+            'expires_in' => 3600,
+        ], 200),
+    ]);
+
+    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockAdministration = \Mockery::mock();
+    $mockAdministration->shouldReceive('get')->andReturn([
+        (object) ['id' => 'admin123', 'name' => 'Test Administration'],
+    ]);
+
+    $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
+
+    $oauthService = \Mockery::mock(\Emeq\Moneybird\Services\OAuthService::class)->makePartial();
+    $oauthService->shouldAllowMockingProtectedMethods();
+    $oauthService->shouldReceive('createMoneybirdClient')
+        ->once()
+        ->andReturn($mockMoneybird);
+
+    expect(fn () => $oauthService->exchangeCodeForTokens('code', 1, null, 'nonexistent'))
+        ->toThrow(\Emeq\Moneybird\Exceptions\MoneybirdException::class, 'Administration with ID nonexistent not found');
+});
+
+it('throws connection error exception when connection fails during token refresh', function () {
+    $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
+        'access_token' => 'old_token',
+        'refresh_token' => 'refresh_token',
+        'expires_at' => now()->subHour(),
+        'is_active' => true,
+    ]);
+
+    Http::fake(function () {
+        throw new \Illuminate\Http\Client\ConnectionException('Connection timeout');
+    });
+
+    $oauthService = new OAuthService;
+
+    expect(fn () => $oauthService->refreshTokens($connection))
+        ->toThrow(\Emeq\Moneybird\Exceptions\ConnectionErrorException::class);
 });
 
 it('can refresh tokens', function () {

@@ -5,11 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v2.0.0 - 2025-11-23
-
-Release v2.0.0
-
 ## [Unreleased]
+
+### Added
+
+- CustomFieldResource for managing custom fields
+- LedgerResource for managing ledgers/accounts (CRUD operations)
+- TaxRateResource for managing tax rates
+- WorkflowResource for managing workflows
+- findByInvoiceId method in SalesInvoiceResource to find invoices by invoice number
+- ConnectionErrorException for better connection/network error handling
+- Timeout configuration for API requests (configurable via MONEYBIRD_API_TIMEOUT)
+- Improved error messages with HTTP status codes and error details in OAuthService
 
 ## [2.0.0] - 2025-11-23
 
@@ -31,7 +38,6 @@ Release v2.0.0
 - Database-backed token storage with `moneybird_connections` table
 - Support for multiple administrations per user/tenant
 - Resource classes for Moneybird API endpoints:
-<<<<<<< HEAD
     - Administrations (list, get)
     - Contacts (CRUD operations, search)
     - Sales Invoices (create, update, send, download)
@@ -42,20 +48,6 @@ Release v2.0.0
     - `moneybird:connect` - Connect to Moneybird via OAuth
     - `moneybird:test-connection` - Test an existing connection
     - `moneybird:refresh-tokens` - Refresh expired tokens
-=======
-  - Administrations (list, get)
-  - Contacts (CRUD operations, search)
-  - Sales Invoices (create, update, send, download)
-  - Estimates (create, update, download)
-  - Documents (General and Typeless documents)
-  - Webhooks (create, list, delete)
-  
-- Artisan commands:
-  - `moneybird:connect` - Connect to Moneybird via OAuth
-  - `moneybird:test-connection` - Test an existing connection
-  - `moneybird:refresh-tokens` - Refresh expired tokens
-  
->>>>>>> 18d354f67af4c9ff00216d06afd6613fe8e06daa
 - Webhook handling with signature validation
 - Laravel events for webhook types (SalesInvoiceCreated, ContactUpdated, etc.)
 - Auto-publishing of config and migration files on package installation

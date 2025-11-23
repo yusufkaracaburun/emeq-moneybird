@@ -19,7 +19,12 @@ return [
     ],
     'api' => [
         'base_url' => 'https://moneybird.com/api/v2',
-        'timeout' => 30,
+        // @phpstan-ignore-next-line
+        'timeout' => env('MONEYBIRD_API_TIMEOUT', 30),
+        // @phpstan-ignore-next-line
+        'retry_attempts' => env('MONEYBIRD_API_RETRY_ATTEMPTS', 3),
+        // @phpstan-ignore-next-line
+        'retry_delay' => env('MONEYBIRD_API_RETRY_DELAY', 1), // seconds
     ],
     'webhook' => [
         // @phpstan-ignore-next-line

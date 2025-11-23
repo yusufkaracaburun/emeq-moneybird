@@ -241,6 +241,78 @@ it('can get webhooks resource', function () {
     expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\WebhookResource::class);
 });
 
+it('can get custom fields resource', function () {
+    $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
+        'access_token' => 'test_token',
+        'expires_at' => now()->addHour(),
+        'is_active' => true,
+    ]);
+
+    $service = app(MoneybirdService::class);
+    $service->setConnection($connection);
+
+    $resource = $service->customFields();
+
+    expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\CustomFieldResource::class);
+});
+
+it('can get ledgers resource', function () {
+    $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
+        'access_token' => 'test_token',
+        'expires_at' => now()->addHour(),
+        'is_active' => true,
+    ]);
+
+    $service = app(MoneybirdService::class);
+    $service->setConnection($connection);
+
+    $resource = $service->ledgers();
+
+    expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\LedgerResource::class);
+});
+
+it('can get tax rates resource', function () {
+    $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
+        'access_token' => 'test_token',
+        'expires_at' => now()->addHour(),
+        'is_active' => true,
+    ]);
+
+    $service = app(MoneybirdService::class);
+    $service->setConnection($connection);
+
+    $resource = $service->taxRates();
+
+    expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\TaxRateResource::class);
+});
+
+it('can get workflows resource', function () {
+    $connection = MoneybirdConnection::create([
+        'user_id' => 1,
+        'name' => 'Test Connection',
+        'administration_id' => 'admin123',
+        'access_token' => 'test_token',
+        'expires_at' => now()->addHour(),
+        'is_active' => true,
+    ]);
+
+    $service = app(MoneybirdService::class);
+    $service->setConnection($connection);
+
+    $resource = $service->workflows();
+
+    expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\WorkflowResource::class);
+});
+
 it('refreshes tokens when connection needs refresh', function () {
     $connection = MoneybirdConnection::create([
         'user_id' => 1,

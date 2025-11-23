@@ -2,9 +2,10 @@
 
 namespace Emeq\Moneybird\Resources;
 
+use Picqer\Financials\Moneybird\Moneybird;
+use Emeq\Moneybird\Exceptions\MoneybirdException;
 use Picqer\Financials\Moneybird\Entities\SalesInvoice;
 use Picqer\Financials\Moneybird\Entities\SalesInvoice\SendInvoiceOptions;
-use Picqer\Financials\Moneybird\Moneybird;
 
 class SalesInvoiceResource
 {
@@ -29,6 +30,17 @@ class SalesInvoiceResource
         $invoice->id = $id;
 
         return $invoice->find($id);
+    }
+
+    public function findByInvoiceId(string $invoiceId): SalesInvoice
+    {
+        $invoices = $this->client->salesInvoice()->filter(['invoice_id' => $invoiceId]);
+
+        if (empty($invoices)) {
+            throw new MoneybirdException("Sales invoice with invoice_id '{$invoiceId}' not found");
+        }
+
+        return $invoices[0];
     }
 
     public function create(array $attributes): SalesInvoice

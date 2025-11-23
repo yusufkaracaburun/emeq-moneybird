@@ -51,6 +51,14 @@ it('handles missing authorization code', function () {
         ->assertFailed();
 });
 
+it('handles missing user id option', function () {
+    $this->artisan('moneybird:connect')
+        ->expectsOutput('Starting Moneybird OAuth connection...')
+        ->expectsQuestion('Enter the authorization code from the callback URL', 'test_code')
+        ->expectsOutput('User ID is required. Please provide --user-id option.')
+        ->assertFailed();
+});
+
 it('handles connection failure', function () {
     Http::fake([
         'moneybird.com/oauth/token' => Http::response(['error' => 'invalid_grant'], 400),
