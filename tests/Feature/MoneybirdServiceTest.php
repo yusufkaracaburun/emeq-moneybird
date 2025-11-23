@@ -2,7 +2,6 @@
 
 use Emeq\Moneybird\Models\MoneybirdConnection;
 use Emeq\Moneybird\Services\MoneybirdService;
-use Emeq\Moneybird\Services\OAuthService;
 use Picqer\Financials\Moneybird\Moneybird;
 
 beforeEach(function () {
@@ -334,4 +333,3 @@ it('does not call refresh when connection is null in ensureValidTokens', functio
 
     expect($result)->toBeNull();
 });
-

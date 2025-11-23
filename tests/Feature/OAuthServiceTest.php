@@ -131,4 +131,3 @@ it('handles missing expires_in in token response', function () {
 
     expect($connection->expires_at)->not->toBeNull();
 });
-

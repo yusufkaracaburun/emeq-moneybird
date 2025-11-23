@@ -2,7 +2,6 @@
 
 use Emeq\Moneybird\Events\ContactCreated;
 use Emeq\Moneybird\Events\ContactUpdated;
-use Emeq\Moneybird\Events\EstimateCreated;
 use Emeq\Moneybird\Events\SalesInvoiceCreated;
 use Illuminate\Support\Facades\Event;
 
@@ -122,4 +121,3 @@ it('handles missing signature header when secret is configured', function () {
 
     $response->assertStatus(500);
 });
-

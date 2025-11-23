@@ -1,7 +1,6 @@
 <?php
 
 use Emeq\Moneybird\Models\MoneybirdConnection;
-use Emeq\Moneybird\Services\OAuthService;
 
 beforeEach(function () {
     config()->set('moneybird.oauth.client_id', 'test_client_id');
@@ -25,7 +24,7 @@ it('can test connection command with connection id', function () {
 
     $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
 
-    $this->app->bind(\Emeq\Moneybird\Services\MoneybirdService::class, function () use ($mockMoneybird, $connection) {
+    $this->app->bind(\Emeq\Moneybird\Services\MoneybirdService::class, function () use ($mockMoneybird) {
         $service = \Mockery::mock(\Emeq\Moneybird\Services\MoneybirdService::class)->makePartial();
         $service->shouldReceive('connection')->andReturnSelf();
         $service->shouldReceive('administrations')->andReturn(
@@ -122,7 +121,7 @@ it('can test connection command without options', function () {
 
     $mockMoneybird->shouldReceive('administration')->andReturn($mockAdministration);
 
-    $this->app->bind(\Emeq\Moneybird\Services\MoneybirdService::class, function () use ($mockMoneybird, $connection) {
+    $this->app->bind(\Emeq\Moneybird\Services\MoneybirdService::class, function () use ($mockMoneybird) {
         $service = \Mockery::mock(\Emeq\Moneybird\Services\MoneybirdService::class)->makePartial();
         $service->shouldReceive('connection')->andReturnSelf();
         $service->shouldReceive('administrations')->andReturn(
@@ -184,4 +183,3 @@ it('can refresh all tokens command', function () {
     $this->artisan('moneybird:refresh-tokens', ['--all' => true])
         ->assertSuccessful();
 });
-
