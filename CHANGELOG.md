@@ -5,20 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v3.0.0 - 2025-11-23
-
-### Added
-
-- CustomFieldResource for managing custom fields
-- LedgerResource for managing ledgers/accounts (CRUD operations)
-- TaxRateResource for managing tax rates
-- WorkflowResource for managing workflows
-- findByInvoiceId method in SalesInvoiceResource to find invoices by invoice number
-- ConnectionErrorException for better connection/network error handling
-- Timeout configuration for API requests (configurable via MONEYBIRD_API_TIMEOUT)
-- Improved error messages with HTTP status codes and error details in OAuthService
-
 ## [Unreleased]
+
+## [4.0.0] - 2025-11-23
+
+### Fixed
+
+- Fixed file paths in MoneybirdServiceProvider for correct Packagist installation
+- Fixed GitHub workflow failures by correcting package file paths
+- Added file existence checks before loading routes to prevent errors during package discovery
+- Added memory limit to PHPStan workflow to prevent memory issues
 
 ## [3.0.0] - 2025-11-23
 
