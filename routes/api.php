@@ -6,7 +6,7 @@ use Emeq\Moneybird\Http\Controllers\SalesInvoiceController;
 use Emeq\Moneybird\Http\Controllers\WebhookApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('moneybird')->name('api.moneybird.')->middleware('auth:sanctum')->group(function (): void {
+Route::prefix('moneybird')->name('api.moneybird.')->group(function (): void {
     Route::prefix('administrations')->name('administrations.')->group(function (): void {
         Route::get('/', [AdministrationController::class, 'index'])->name('index');
         Route::get('/{id}', [AdministrationController::class, 'show'])->name('show');
