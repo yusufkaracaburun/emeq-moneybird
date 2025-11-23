@@ -46,7 +46,7 @@ it('can exchange authorization code for tokens', function () {
 
 it('can create moneybird client', function () {
     $oauthService = new OAuthService;
-    
+
     $connection = new \Picqer\Financials\Moneybird\Connection;
     $connection->setClientId('test_client_id');
     $connection->setClientSecret('test_secret');

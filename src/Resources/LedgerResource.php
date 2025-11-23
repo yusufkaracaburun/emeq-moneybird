@@ -58,4 +58,3 @@ class LedgerResource
         return $ledger->delete();
     }
 }
-

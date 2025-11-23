@@ -37,7 +37,7 @@ class OAuthService
                     'client_secret' => config('moneybird.oauth.client_secret'),
                 ]);
         } catch (\Illuminate\Http\Client\ConnectionException $e) {
-            $exception = new ConnectionErrorException('Failed to connect to Moneybird OAuth endpoint: ' . $e->getMessage());
+            $exception = new ConnectionErrorException('Failed to connect to Moneybird OAuth endpoint: '.$e->getMessage());
             throw $exception;
         }
 
@@ -107,7 +107,7 @@ class OAuthService
                     'client_secret' => config('moneybird.oauth.client_secret'),
                 ]);
         } catch (\Illuminate\Http\Client\ConnectionException $e) {
-            $exception = new ConnectionErrorException('Failed to connect to Moneybird OAuth endpoint: ' . $e->getMessage());
+            $exception = new ConnectionErrorException('Failed to connect to Moneybird OAuth endpoint: '.$e->getMessage());
             throw $exception;
         }
 

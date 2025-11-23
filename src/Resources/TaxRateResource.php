@@ -29,4 +29,3 @@ class TaxRateResource
         return $taxRate->find($id);
     }
 }
-
