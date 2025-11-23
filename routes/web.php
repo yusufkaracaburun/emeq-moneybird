@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('moneybird')->name('moneybird.')->group(function (): void {
-    Route::middleware('auth')->group(function (): void {
+    Route::group(function (): void {
         Route::get('/auth/callback', function (Request $request) {
             $code = $request->query('code');
             $error = $request->query('error');
