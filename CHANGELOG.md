@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.0.0 - 2025-11-23
+
+Release v2.0.0
+
 ## [Unreleased]
 
 ## [2.0.0] - 2025-11-23
@@ -35,10 +39,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Estimates (create, update, download)
   - Documents (General and Typeless documents)
   - Webhooks (create, list, delete)
+  
 - Artisan commands:
   - `moneybird:connect` - Connect to Moneybird via OAuth
   - `moneybird:test-connection` - Test an existing connection
   - `moneybird:refresh-tokens` - Refresh expired tokens
+  
 - Webhook handling with signature validation
 - Laravel events for webhook types (SalesInvoiceCreated, ContactUpdated, etc.)
 - Auto-publishing of config and migration files on package installation
