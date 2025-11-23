@@ -2,9 +2,9 @@
 
 namespace Emeq\Moneybird\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AdministrationController
 {
@@ -20,7 +20,7 @@ class AdministrationController
             $administrations = $service->administrations()->list();
 
             // Ensure administrations is an array
-            if (!is_array($administrations)) {
+            if (! is_array($administrations)) {
                 $administrations = [];
             }
 
@@ -33,14 +33,15 @@ class AdministrationController
                         'language' => $admin->language ?? null,
                         'currency' => $admin->currency ?? null,
                         'time_zone' => $admin->time_zone ?? ($admin->timezone ?? null),
-                        'created_at' => isset($admin->created_at) && method_exists($admin->created_at, 'toDateTimeString') 
-                            ? $admin->created_at->toDateTimeString() 
+                        'created_at' => isset($admin->created_at) && method_exists($admin->created_at, 'toDateTimeString')
+                            ? $admin->created_at->toDateTimeString()
                             : ($admin->created_at ?? null),
                         'updated_at' => isset($admin->updated_at) && method_exists($admin->updated_at, 'toDateTimeString')
                             ? $admin->updated_at->toDateTimeString()
                             : ($admin->updated_at ?? null),
                     ];
                 }
+
                 return $admin;
             }, $administrations);
 
