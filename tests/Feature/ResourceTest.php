@@ -2,7 +2,6 @@
 
 use Emeq\Moneybird\Models\MoneybirdConnection;
 use Emeq\Moneybird\Services\MoneybirdService;
-use Picqer\Financials\Moneybird\Moneybird;
 
 beforeEach(function () {
     config()->set('moneybird.oauth.client_id', 'test_client_id');
@@ -55,4 +54,3 @@ it('can get webhooks resource', function () {
 
     expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\WebhookResource::class);
 });
-

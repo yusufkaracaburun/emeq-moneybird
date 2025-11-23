@@ -1,6 +1,5 @@
 <?php
 
-use Emeq\Moneybird\Services\OAuthService;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
@@ -72,4 +71,3 @@ it('can connect with tenant id option', function () {
         ->expectsQuestion('Enter the authorization code from the callback URL', 'test_code')
         ->assertSuccessful();
 });
-
