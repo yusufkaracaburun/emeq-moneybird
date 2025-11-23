@@ -3,11 +3,11 @@
 return [
     'oauth' => [
         // @phpstan-ignore-next-line
-        'client_id' => env('MONEYBIRD_CLIENT_ID'),
+        'client_id' => env('MONEYBIRD_CLIENT_ID', null),
         // @phpstan-ignore-next-line
-        'client_secret' => env('MONEYBIRD_CLIENT_SECRET'),
+        'client_secret' => env('MONEYBIRD_CLIENT_SECRET', null),
         // @phpstan-ignore-next-line
-        'redirect_uri' => env('MONEYBIRD_REDIRECT_URI'),
+        'redirect_uri' => env('MONEYBIRD_REDIRECT_URI', null),
         'scopes' => [
             'sales_invoices',
             'documents',
@@ -23,7 +23,7 @@ return [
     ],
     'webhook' => [
         // @phpstan-ignore-next-line
-        'secret' => env('MONEYBIRD_WEBHOOK_SECRET'),
+        'secret' => env('MONEYBIRD_WEBHOOK_SECRET', null),
         'route' => '/moneybird/webhook',
     ],
 ];

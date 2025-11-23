@@ -10,17 +10,20 @@ You can install the package via composer:
 composer require emeq/moneybird
 ```
 
-You can publish and run the migrations with:
+The package will automatically publish the config file and migration to your application during installation. If you need to republish them manually:
 
 ```bash
+# Publish config file
+php artisan vendor:publish --tag="moneybird-config"
+
+# Publish migrations
 php artisan vendor:publish --tag="moneybird-migrations"
-php artisan migrate
 ```
 
-You can publish the config file with:
+After installation, run the migrations:
 
 ```bash
-php artisan vendor:publish --tag="moneybird-config"
+php artisan migrate
 ```
 
 ## Configuration
@@ -150,12 +153,12 @@ Event::listen(ContactUpdated::class, function ($event) {
 - Database-backed token storage
 - Support for multiple administrations
 - Extended API features:
-  - Contacts (CRUD operations)
-  - Sales Invoices (create, update, send, download)
-  - Estimates (create, update, download)
-  - Documents (General and Typeless documents)
-  - Webhooks (create, list, delete)
-  - Administrations (list, get)
+    - Contacts (CRUD operations)
+    - Sales Invoices (create, update, send, download)
+    - Estimates (create, update, download)
+    - Documents (General and Typeless documents)
+    - Webhooks (create, list, delete)
+    - Administrations (list, get)
 
 ## Testing
 

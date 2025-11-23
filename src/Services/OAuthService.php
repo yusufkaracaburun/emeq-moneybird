@@ -16,8 +16,12 @@ class OAuthService
         return $connection->getAuthUrl();
     }
 
-    public function exchangeCodeForTokens(string $authorizationCode, ?int $userId = null, ?string $tenantId = null): MoneybirdConnection
+    public function exchangeCodeForTokens(string $authorizationCode, int $userId, ?string $tenantId = null, ?string $administrationId = null): MoneybirdConnection
     {
+        if (! $userId) {
+            throw new \RuntimeException('User ID is required');
+        }
+
         $response = \Illuminate\Support\Facades\Http::asForm()->post('https://moneybird.com/oauth/token', [
             'grant_type' => 'authorization_code',
             'code' => $authorizationCode,
@@ -32,9 +36,33 @@ class OAuthService
             throw new \RuntimeException('Failed to exchange authorization code for tokens');
         }
 
+        // Fetch administrations to get administration_id and name
+        $connection = $this->createConnection();
+        $connection->setAccessToken($body['access_token']);
+        $moneybird = new \Picqer\Financials\Moneybird\Moneybird($connection);
+
+        $administrations = $moneybird->administration()->get();
+
+        if (empty($administrations)) {
+            throw new \RuntimeException('No administrations found for this Moneybird account');
+        }
+
+        // Use provided administration_id or select the first one
+        $selectedAdministration = null;
+        if ($administrationId) {
+            $selectedAdministration = collect($administrations)->firstWhere('id', $administrationId);
+            if (! $selectedAdministration) {
+                throw new \RuntimeException("Administration with ID {$administrationId} not found");
+            }
+        } else {
+            $selectedAdministration = $administrations[0];
+        }
+
         $moneybirdConnection = MoneybirdConnection::create([
             'user_id' => $userId,
             'tenant_id' => $tenantId,
+            'name' => $selectedAdministration->name ?? 'Moneybird Connection',
+            'administration_id' => (string) $selectedAdministration->id,
             'access_token' => $body['access_token'],
             'refresh_token' => $body['refresh_token'] ?? null,
             'expires_at' => isset($body['expires_in']) ? now()->addSeconds($body['expires_in']) : now()->addHours(1),

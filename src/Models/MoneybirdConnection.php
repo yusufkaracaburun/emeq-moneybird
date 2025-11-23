@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int|null $user_id
+ * @property int $user_id
  * @property string|null $tenant_id
- * @property string|null $name
- * @property string|null $administration_id
- * @property string|null $access_token
+ * @property string $name
+ * @property string $administration_id
+ * @property string $access_token
  * @property string|null $refresh_token
- * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property \Illuminate\Support\Carbon $expires_at
  * @property bool $is_active
  * @property array|null $metadata
  */

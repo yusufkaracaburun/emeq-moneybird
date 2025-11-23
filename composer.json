@@ -52,6 +52,9 @@
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "post-package-install": [
+            "@php -r \"if (file_exists('vendor/autoload.php')) { require 'vendor/autoload.php'; if (class_exists('Illuminate\\Support\\Facades\\Artisan')) { \\Illuminate\\Support\\Facades\\Artisan::call('vendor:publish', ['--tag' => 'moneybird-config', '--force' => false]); \\Illuminate\\Support\\Facades\\Artisan::call('vendor:publish', ['--tag' => 'moneybird-migrations', '--force' => false]); } }\""
+        ],
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test:coverage": "vendor/bin/pest --coverage",
