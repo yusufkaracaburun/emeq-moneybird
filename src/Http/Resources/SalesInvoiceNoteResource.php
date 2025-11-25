@@ -10,20 +10,20 @@ class SalesInvoiceNoteResource extends MoneybirdResource
     protected function getFields(): array
     {
         return [
-            'id'              => 'id',
+            'id'                => 'id',
             'administration_id' => 'administration_id',
-            'entity_id'       => 'entity_id',
-            'entity_type'     => 'entity_type',
-            'user_id'         => 'user_id',
-            'assignee_id'     => 'assignee_id',
-            'todo'            => 'todo',
-            'note'            => 'note',
-            'completed_at'    => 'completed_at',
-            'completed_by_id' => 'completed_by_id',
-            'todo_type'       => 'todo_type',
-            'data'            => 'data',
-            'created_at'      => 'created_at',
-            'updated_at'      => 'updated_at',
+            'entity_id'         => 'entity_id',
+            'entity_type'       => 'entity_type',
+            'user_id'           => 'user_id',
+            'assignee_id'       => 'assignee_id',
+            'todo'              => 'todo',
+            'note'              => 'note',
+            'completed_at'      => 'completed_at',
+            'completed_by_id'   => 'completed_by_id',
+            'todo_type'         => 'todo_type',
+            'data'              => 'data',
+            'created_at'        => 'created_at',
+            'updated_at'        => 'updated_at',
         ];
     }
 
@@ -38,4 +38,3 @@ class SalesInvoiceNoteResource extends MoneybirdResource
         ];
     }
 }
-

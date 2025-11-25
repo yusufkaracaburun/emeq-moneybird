@@ -2,7 +2,6 @@
 
 namespace Emeq\Moneybird\Http\Resources;
 
-use Illuminate\Http\Request;
 use Emeq\Moneybird\Http\Resources\SalesInvoiceAttachmentResource as AttachmentResource;
 use Emeq\Moneybird\Http\Resources\SalesInvoiceCustomFieldResource as CustomFieldResource;
 use Emeq\Moneybird\Http\Resources\SalesInvoiceDetailResource as DetailResource;
@@ -11,6 +10,7 @@ use Emeq\Moneybird\Http\Resources\SalesInvoiceNoteResource as NoteResource;
 use Emeq\Moneybird\Http\Resources\SalesInvoicePaymentResource as PaymentResource;
 use Emeq\Moneybird\Http\Resources\SalesInvoiceTaxTotalResource as TaxTotalResource;
 use Emeq\Moneybird\Http\Resources\SalesInvoiceTimeEntryResource as TimeEntryResource;
+use Illuminate\Http\Request;
 
 class SalesInvoiceResource extends MoneybirdResource
 {
@@ -87,14 +87,14 @@ class SalesInvoiceResource extends MoneybirdResource
     protected function getDefaults(): array
     {
         return [
-            'details'      => [],
-            'payments'     => [],
-            'custom_fields'=> [],
-            'notes'        => [],
-            'attachments'  => [],
-            'events'       => [],
-            'tax_totals'   => [],
-            'time_entries' => [],
+            'details'       => [],
+            'payments'      => [],
+            'custom_fields' => [],
+            'notes'         => [],
+            'attachments'   => [],
+            'events'        => [],
+            'tax_totals'    => [],
+            'time_entries'  => [],
         ];
     }
 

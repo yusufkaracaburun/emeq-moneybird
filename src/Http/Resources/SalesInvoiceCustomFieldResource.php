@@ -16,4 +16,3 @@ class SalesInvoiceCustomFieldResource extends MoneybirdResource
         ];
     }
 }
-

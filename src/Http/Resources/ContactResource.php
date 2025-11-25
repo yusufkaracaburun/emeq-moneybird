@@ -2,11 +2,10 @@
 
 namespace Emeq\Moneybird\Http\Resources;
 
-use Illuminate\Http\Request;
-use Emeq\Moneybird\Http\Resources\ContactPersonResource;
 use Emeq\Moneybird\Http\Resources\SalesInvoiceCustomFieldResource as CustomFieldResource;
 use Emeq\Moneybird\Http\Resources\SalesInvoiceEventResource as EventResource;
 use Emeq\Moneybird\Http\Resources\SalesInvoiceNoteResource as NoteResource;
+use Illuminate\Http\Request;
 
 class ContactResource extends MoneybirdResource
 {
@@ -57,7 +56,7 @@ class ContactResource extends MoneybirdResource
             'tax_number_valid'            => 'tax_number_valid',
             'invoice_workflow_id'         => 'invoice_workflow_id',
             'estimate_workflow_id'        => 'estimate_workflow_id',
-            'si_identifier'                => 'si_identifier',
+            'si_identifier'               => 'si_identifier',
             'si_identifier_type'          => 'si_identifier_type',
             'moneybird_payments_mandate'  => 'moneybird_payments_mandate',
             'created_at'                  => 'created_at',

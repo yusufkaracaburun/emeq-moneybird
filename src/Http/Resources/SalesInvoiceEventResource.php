@@ -31,4 +31,3 @@ class SalesInvoiceEventResource extends MoneybirdResource
         ];
     }
 }
-
