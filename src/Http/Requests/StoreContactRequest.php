@@ -22,17 +22,32 @@ class StoreContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname'    => ['nullable', 'string', 'max:255'],
-            'lastname'     => ['nullable', 'string', 'max:255'],
-            'company_name' => ['nullable', 'string', 'max:255'],
-            'email'        => ['nullable', 'email', 'max:255'],
-            'phone'        => ['nullable', 'string', 'max:255'],
-            'address1'     => ['nullable', 'string', 'max:255'],
-            'address2'     => ['nullable', 'string', 'max:255'],
-            'zipcode'      => ['nullable', 'string', 'max:255'],
-            'city'         => ['nullable', 'string', 'max:255'],
-            'country'      => ['nullable', 'string', 'max:255'],
-            'tax_number'   => ['nullable', 'string', 'max:255'],
+            'firstname' => [
+                'nullable',
+                'string',
+                'max:255',
+                'required_without:company_name',
+            ],
+            'lastname' => [
+                'nullable',
+                'string',
+                'max:255',
+                'required_without:company_name',
+            ],
+            'company_name' => [
+                'nullable',
+                'string',
+                'max:255',
+                'required_without_all:firstname,lastname',
+            ],
+            'email'      => ['nullable', 'email', 'max:255'],
+            'phone'      => ['nullable', 'string', 'max:255'],
+            'address1'   => ['nullable', 'string', 'max:255'],
+            'address2'   => ['nullable', 'string', 'max:255'],
+            'zipcode'    => ['nullable', 'string', 'max:255'],
+            'city'       => ['nullable', 'string', 'max:255'],
+            'country'    => ['nullable', 'string', 'max:255'],
+            'tax_number' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
