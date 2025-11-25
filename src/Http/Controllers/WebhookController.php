@@ -2,16 +2,16 @@
 
 namespace Emeq\Moneybird\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 use Emeq\Moneybird\Events\ContactCreated;
 use Emeq\Moneybird\Events\ContactDeleted;
 use Emeq\Moneybird\Events\ContactUpdated;
+use Emeq\Moneybird\Events\MoneybirdWebhookReceived;
 use Emeq\Moneybird\Events\SalesInvoiceCreated;
 use Emeq\Moneybird\Events\SalesInvoiceDeleted;
 use Emeq\Moneybird\Events\SalesInvoiceUpdated;
-use Emeq\Moneybird\Events\MoneybirdWebhookReceived;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class WebhookController
 {

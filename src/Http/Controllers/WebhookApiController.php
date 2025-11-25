@@ -2,14 +2,13 @@
 
 namespace Emeq\Moneybird\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Emeq\Moneybird\Http\Resources\WebhookResource;
-use Emeq\Moneybird\Http\Resources\WebhookCollection;
-use Emeq\Moneybird\Http\Requests\StoreWebhookRequest;
 use Emeq\Moneybird\Http\Controllers\Concerns\ApiResponser;
 use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
-
+use Emeq\Moneybird\Http\Requests\StoreWebhookRequest;
+use Emeq\Moneybird\Http\Resources\WebhookCollection;
+use Emeq\Moneybird\Http\Resources\WebhookResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class WebhookApiController
 {
