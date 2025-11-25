@@ -15,9 +15,10 @@ class WebhookResource extends MoneybirdResource
             'id'                => 'id',
             'administration_id' => 'administration_id',
             'url'               => 'url',
-            'events'            => 'events',
-            'created_at'        => 'created_at',
-            'updated_at'        => 'updated_at',
+            'enabled_events'    => 'enabled_events',
+            'last_http_status'  => 'last_http_status',
+            'last_http_body'    => 'last_http_body',
+            'token'             => 'token',
         ];
     }
 
@@ -29,7 +30,9 @@ class WebhookResource extends MoneybirdResource
     protected function getDefaults(): array
     {
         return [
-            'events' => [],
+            'enabled_events'   => [],
+            'last_http_status' => null,
+            'last_http_body'   => null,
         ];
     }
 }

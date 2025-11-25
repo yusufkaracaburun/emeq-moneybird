@@ -119,11 +119,16 @@ class ContactResource extends MoneybirdResource
     }
 
     /**
+     * @param  array<int|string, mixed>|null  $items
+     * @param  class-string<MoneybirdResource>  $resourceClass
      * @return array<int, array<string, mixed>>
      */
     private function transformCollection(mixed $items, string $resourceClass, Request $request): array
     {
-        return collect($items ?? [])
+        /** @var array<int|string, mixed> $itemsArray */
+        $itemsArray = $items ?? [];
+
+        return collect($itemsArray)
             ->filter(static fn ($item) => $item !== null)
             ->map(static fn ($item) => (new $resourceClass($item))->toArray($request))
             ->values()
