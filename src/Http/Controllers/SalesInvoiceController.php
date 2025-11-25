@@ -24,8 +24,8 @@ class SalesInvoiceController
      */
     public function index(FilterSalesInvoiceRequest $request): JsonResponse
     {
-        $service = $this->getService($request);
-        $filters = array_filter($request->validated());
+        $service  = $this->getService($request);
+        $filters  = array_filter($request->validated());
         $invoices = $service->salesInvoices()->list($filters);
 
         return $this->success(new SalesInvoiceCollection($invoices), 'Sales invoices listed');
@@ -91,9 +91,9 @@ class SalesInvoiceController
      */
     public function send(SendSalesInvoiceRequest $request, string $id): JsonResponse
     {
-        $service = $this->getService($request);
+        $service   = $this->getService($request);
         $validated = $request->validated();
-        $invoice = $service->salesInvoices()->send($id, $validated['delivery_method']);
+        $invoice   = $service->salesInvoices()->send($id, $validated['delivery_method']);
 
         return $this->success(new SalesInvoiceResource($invoice), 'Sales invoice sent successfully');
     }
@@ -104,7 +104,7 @@ class SalesInvoiceController
     public function downloadPdf(Request $request, string $id): Response|JsonResponse
     {
         $service = $this->getService($request);
-        $pdf = $service->salesInvoices()->downloadPdf($id);
+        $pdf     = $service->salesInvoices()->downloadPdf($id);
 
         return $this->downloadFile($pdf, 'invoice-'.$id.'.pdf', 'application/pdf');
     }
@@ -115,7 +115,7 @@ class SalesInvoiceController
     public function downloadUbl(Request $request, string $id): Response|JsonResponse
     {
         $service = $this->getService($request);
-        $ubl = $service->salesInvoices()->downloadUbl($id);
+        $ubl     = $service->salesInvoices()->downloadUbl($id);
 
         return $this->downloadFile($ubl, 'invoice-'.$id.'.ubl', 'application/xml');
     }

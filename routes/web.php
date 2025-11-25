@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('moneybird')->name('moneybird.')->group(function (): void {
     Route::get('/auth/callback', function (Request $request) {
-        $code = $request->query('code');
+        $code  = $request->query('code');
         $error = $request->query('error');
 
         if ($error) {
@@ -23,7 +23,7 @@ Route::prefix('moneybird')->name('moneybird.')->group(function (): void {
                 return redirect()->route('dashboard')->with('error', 'You must be logged in to connect Moneybird');
             }
 
-            $oauthService = app(Emeq\Moneybird\Services\OAuthService::class);
+            $oauthService     = app(Emeq\Moneybird\Services\OAuthService::class);
             $administrationId = $request->query('administration_id');
 
             $connection = $oauthService->exchangeCodeForTokens(
@@ -40,7 +40,7 @@ Route::prefix('moneybird')->name('moneybird.')->group(function (): void {
     })->name('auth.callback');
 
     Route::get('/connect', function () {
-        $oauthService = app(Emeq\Moneybird\Services\OAuthService::class);
+        $oauthService     = app(Emeq\Moneybird\Services\OAuthService::class);
         $authorizationUrl = $oauthService->getAuthorizationUrl();
 
         return redirect($authorizationUrl);

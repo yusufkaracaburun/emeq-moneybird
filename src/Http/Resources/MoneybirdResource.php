@@ -53,7 +53,7 @@ abstract class MoneybirdResource extends JsonResource
      */
     protected function transformFromAttributes(array $attrs, object $resource): array
     {
-        $result = [];
+        $result   = [];
         $defaults = $this->getDefaults();
 
         foreach ($this->getFields() as $key => $field) {
@@ -71,16 +71,17 @@ abstract class MoneybirdResource extends JsonResource
      */
     protected function transformFromArray(array $data): array
     {
-        $result = [];
+        $result   = [];
         $defaults = $this->getDefaults();
 
         foreach ($this->getFields() as $key => $field) {
             $fields = is_array($field) ? $field : [$field];
-            $value = null;
+            $value  = null;
 
             foreach ($fields as $f) {
                 if (isset($data[$f])) {
                     $value = $data[$f];
+
                     break;
                 }
             }
@@ -98,7 +99,7 @@ abstract class MoneybirdResource extends JsonResource
      */
     protected function transformFromObject(object $resource): array
     {
-        $result = [];
+        $result   = [];
         $defaults = $this->getDefaults();
 
         foreach ($this->getFields() as $key => $field) {
@@ -116,13 +117,14 @@ abstract class MoneybirdResource extends JsonResource
      */
     protected function extractValue(array $attrs, object $resource, string|array $field, mixed $default = null): mixed
     {
-        $fields = is_array($field) ? $field : [$field];
-        $value = null;
+        $fields       = is_array($field) ? $field : [$field];
+        $value        = null;
         $primaryField = $fields[0];
 
         foreach ($fields as $f) {
             if (! empty($attrs) && isset($attrs[$f])) {
                 $value = $attrs[$f];
+
                 break;
             }
         }
@@ -131,6 +133,7 @@ abstract class MoneybirdResource extends JsonResource
             foreach ($fields as $f) {
                 if (isset($resource->$f)) {
                     $value = $resource->$f;
+
                     break;
                 }
             }

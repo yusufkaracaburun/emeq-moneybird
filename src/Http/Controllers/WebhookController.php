@@ -20,7 +20,7 @@ class WebhookController
      */
     public function handle(Request $request): Response
     {
-        $payload = $request->all();
+        $payload   = $request->all();
         $eventType = $payload['event'] ?? null;
 
         if (! $eventType) {
@@ -83,9 +83,9 @@ class WebhookController
             'sales_invoice.created' => SalesInvoiceCreated::class,
             'sales_invoice.updated' => SalesInvoiceUpdated::class,
             'sales_invoice.deleted' => SalesInvoiceDeleted::class,
-            'contact.created' => ContactCreated::class,
-            'contact.updated' => ContactUpdated::class,
-            'contact.deleted' => ContactDeleted::class,
+            'contact.created'       => ContactCreated::class,
+            'contact.updated'       => ContactUpdated::class,
+            'contact.deleted'       => ContactDeleted::class,
         ];
 
         return $eventMap[$eventType] ?? null;

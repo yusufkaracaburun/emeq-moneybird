@@ -36,14 +36,15 @@ class OAuthService
             $response = \Illuminate\Support\Facades\Http::timeout($timeout)
                 ->asForm()
                 ->post('https://moneybird.com/oauth/token', [
-                    'grant_type' => 'authorization_code',
-                    'code' => $authorizationCode,
-                    'redirect_uri' => config('moneybird.oauth.redirect_uri'),
-                    'client_id' => config('moneybird.oauth.client_id'),
+                    'grant_type'    => 'authorization_code',
+                    'code'          => $authorizationCode,
+                    'redirect_uri'  => config('moneybird.oauth.redirect_uri'),
+                    'client_id'     => config('moneybird.oauth.client_id'),
                     'client_secret' => config('moneybird.oauth.client_secret'),
                 ]);
         } catch (\Illuminate\Http\Client\ConnectionException $e) {
             $exception = new ConnectionErrorException('Failed to connect to Moneybird OAuth endpoint: '.$e->getMessage());
+
             throw $exception;
         }
 
@@ -51,7 +52,7 @@ class OAuthService
 
         if (! $response->successful() || ! isset($body['access_token'])) {
             $errorMessage = $body['error_description'] ?? $body['error'] ?? 'Failed to exchange authorization code for tokens';
-            $statusCode = $response->status();
+            $statusCode   = $response->status();
 
             throw new MoneybirdException(
                 "Failed to exchange authorization code for tokens (HTTP {$statusCode}): {$errorMessage}",
@@ -70,8 +71,10 @@ class OAuthService
         }
 
         $selectedAdministration = null;
+
         if ($administrationId) {
             $selectedAdministration = collect($administrations)->firstWhere('id', $administrationId);
+
             if (! $selectedAdministration) {
                 throw new MoneybirdException("Administration with ID {$administrationId} not found");
             }
@@ -80,14 +83,14 @@ class OAuthService
         }
 
         $moneybirdConnection = MoneybirdConnection::create([
-            'user_id' => $userId,
-            'tenant_id' => $tenantId,
-            'name' => $selectedAdministration->name ?? 'Moneybird Connection',
+            'user_id'           => $userId,
+            'tenant_id'         => $tenantId,
+            'name'              => $selectedAdministration->name ?? 'Moneybird Connection',
             'administration_id' => (string) $selectedAdministration->id,
-            'access_token' => $body['access_token'],
-            'refresh_token' => $body['refresh_token'] ?? null,
-            'expires_at' => isset($body['expires_in']) ? now()->addSeconds($body['expires_in']) : now()->addHours(1),
-            'is_active' => true,
+            'access_token'      => $body['access_token'],
+            'refresh_token'     => $body['refresh_token'] ?? null,
+            'expires_at'        => isset($body['expires_in']) ? now()->addSeconds($body['expires_in']) : now()->addHours(1),
+            'is_active'         => true,
         ]);
 
         return $moneybirdConnection;
@@ -108,13 +111,14 @@ class OAuthService
             $response = \Illuminate\Support\Facades\Http::timeout($timeout)
                 ->asForm()
                 ->post('https://moneybird.com/oauth/token', [
-                    'grant_type' => 'refresh_token',
+                    'grant_type'    => 'refresh_token',
                     'refresh_token' => $connection->refresh_token,
-                    'client_id' => config('moneybird.oauth.client_id'),
+                    'client_id'     => config('moneybird.oauth.client_id'),
                     'client_secret' => config('moneybird.oauth.client_secret'),
                 ]);
         } catch (\Illuminate\Http\Client\ConnectionException $e) {
             $exception = new ConnectionErrorException('Failed to connect to Moneybird OAuth endpoint: '.$e->getMessage());
+
             throw $exception;
         }
 
@@ -122,7 +126,7 @@ class OAuthService
 
         if (! $response->successful() || ! isset($body['access_token'])) {
             $errorMessage = $body['error_description'] ?? $body['error'] ?? 'Failed to refresh tokens';
-            $statusCode = $response->status();
+            $statusCode   = $response->status();
 
             throw new MoneybirdException(
                 "Failed to refresh tokens (HTTP {$statusCode}): {$errorMessage}",
@@ -131,9 +135,9 @@ class OAuthService
         }
 
         $connection->update([
-            'access_token' => $body['access_token'],
+            'access_token'  => $body['access_token'],
             'refresh_token' => $body['refresh_token'] ?? $connection->refresh_token,
-            'expires_at' => now()->addSeconds($body['expires_in'] ?? 3600),
+            'expires_at'    => now()->addSeconds($body['expires_in'] ?? 3600),
         ]);
 
         return $connection->fresh();

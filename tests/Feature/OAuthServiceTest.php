@@ -14,9 +14,9 @@ beforeEach(function () {
 it('can exchange authorization code for tokens', function () {
     Http::fake([
         'moneybird.com/oauth/token' => Http::response([
-            'access_token' => 'new_access_token',
+            'access_token'  => 'new_access_token',
             'refresh_token' => 'new_refresh_token',
-            'expires_in' => 3600,
+            'expires_in'    => 3600,
         ], 200),
     ]);
 
@@ -54,7 +54,7 @@ it('can create moneybird client', function () {
     $connection->setAccessToken('test_token');
 
     $reflection = new \ReflectionClass($oauthService);
-    $method = $reflection->getMethod('createMoneybirdClient');
+    $method     = $reflection->getMethod('createMoneybirdClient');
     $method->setAccessible(true);
 
     $client = $method->invoke($oauthService, $connection);
@@ -94,13 +94,13 @@ it('throws connection error exception when connection fails during token exchang
 it('throws exception when no administrations found', function () {
     Http::fake([
         'moneybird.com/oauth/token' => Http::response([
-            'access_token' => 'new_access_token',
+            'access_token'  => 'new_access_token',
             'refresh_token' => 'new_refresh_token',
-            'expires_in' => 3600,
+            'expires_in'    => 3600,
         ], 200),
     ]);
 
-    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockMoneybird      = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
     $mockAdministration = \Mockery::mock();
     $mockAdministration->shouldReceive('get')->andReturn([]);
 
@@ -119,13 +119,13 @@ it('throws exception when no administrations found', function () {
 it('throws exception when specified administration not found', function () {
     Http::fake([
         'moneybird.com/oauth/token' => Http::response([
-            'access_token' => 'new_access_token',
+            'access_token'  => 'new_access_token',
             'refresh_token' => 'new_refresh_token',
-            'expires_in' => 3600,
+            'expires_in'    => 3600,
         ], 200),
     ]);
 
-    $mockMoneybird = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
+    $mockMoneybird      = \Mockery::mock(\Picqer\Financials\Moneybird\Moneybird::class);
     $mockAdministration = \Mockery::mock();
     $mockAdministration->shouldReceive('get')->andReturn([
         (object) ['id' => 'admin123', 'name' => 'Test Administration'],
@@ -145,13 +145,13 @@ it('throws exception when specified administration not found', function () {
 
 it('throws connection error exception when connection fails during token refresh', function () {
     $connection = MoneybirdConnection::create([
-        'user_id' => 1,
-        'name' => 'Test Connection',
+        'user_id'           => 1,
+        'name'              => 'Test Connection',
         'administration_id' => 'admin123',
-        'access_token' => 'old_token',
-        'refresh_token' => 'refresh_token',
-        'expires_at' => now()->subHour(),
-        'is_active' => true,
+        'access_token'      => 'old_token',
+        'refresh_token'     => 'refresh_token',
+        'expires_at'        => now()->subHour(),
+        'is_active'         => true,
     ]);
 
     Http::fake(function () {
@@ -166,25 +166,25 @@ it('throws connection error exception when connection fails during token refresh
 
 it('can refresh tokens', function () {
     $connection = MoneybirdConnection::create([
-        'user_id' => 1,
-        'name' => 'Test Connection',
+        'user_id'           => 1,
+        'name'              => 'Test Connection',
         'administration_id' => 'admin123',
-        'access_token' => 'old_token',
-        'refresh_token' => 'refresh_token',
-        'expires_at' => now()->subHour(),
-        'is_active' => true,
+        'access_token'      => 'old_token',
+        'refresh_token'     => 'refresh_token',
+        'expires_at'        => now()->subHour(),
+        'is_active'         => true,
     ]);
 
     Http::fake([
         'moneybird.com/oauth/token' => Http::response([
-            'access_token' => 'new_access_token',
+            'access_token'  => 'new_access_token',
             'refresh_token' => 'new_refresh_token',
-            'expires_in' => 3600,
+            'expires_in'    => 3600,
         ], 200),
     ]);
 
     $oauthService = new OAuthService;
-    $refreshed = $oauthService->refreshTokens($connection);
+    $refreshed    = $oauthService->refreshTokens($connection);
 
     expect($refreshed->access_token)->toBe('new_access_token')
         ->and($refreshed->refresh_token)->toBe('new_refresh_token');
@@ -192,13 +192,13 @@ it('can refresh tokens', function () {
 
 it('throws exception when refresh token is missing', function () {
     $connection = MoneybirdConnection::create([
-        'user_id' => 1,
-        'name' => 'Test Connection',
+        'user_id'           => 1,
+        'name'              => 'Test Connection',
         'administration_id' => 'admin123',
-        'access_token' => 'old_token',
-        'refresh_token' => null,
-        'expires_at' => now()->subHour(),
-        'is_active' => true,
+        'access_token'      => 'old_token',
+        'refresh_token'     => null,
+        'expires_at'        => now()->subHour(),
+        'is_active'         => true,
     ]);
 
     $oauthService = new OAuthService;
@@ -209,13 +209,13 @@ it('throws exception when refresh token is missing', function () {
 
 it('throws exception when token refresh fails', function () {
     $connection = MoneybirdConnection::create([
-        'user_id' => 1,
-        'name' => 'Test Connection',
+        'user_id'           => 1,
+        'name'              => 'Test Connection',
         'administration_id' => 'admin123',
-        'access_token' => 'old_token',
-        'refresh_token' => 'invalid_refresh_token',
-        'expires_at' => now()->subHour(),
-        'is_active' => true,
+        'access_token'      => 'old_token',
+        'refresh_token'     => 'invalid_refresh_token',
+        'expires_at'        => now()->subHour(),
+        'is_active'         => true,
     ]);
 
     Http::fake([
@@ -230,24 +230,24 @@ it('throws exception when token refresh fails', function () {
 
 it('handles missing refresh token in response', function () {
     $connection = MoneybirdConnection::create([
-        'user_id' => 1,
-        'name' => 'Test Connection',
+        'user_id'           => 1,
+        'name'              => 'Test Connection',
         'administration_id' => 'admin123',
-        'access_token' => 'old_token',
-        'refresh_token' => 'refresh_token',
-        'expires_at' => now()->subHour(),
-        'is_active' => true,
+        'access_token'      => 'old_token',
+        'refresh_token'     => 'refresh_token',
+        'expires_at'        => now()->subHour(),
+        'is_active'         => true,
     ]);
 
     Http::fake([
         'moneybird.com/oauth/token' => Http::response([
             'access_token' => 'new_access_token',
-            'expires_in' => 3600,
+            'expires_in'   => 3600,
         ], 200),
     ]);
 
     $oauthService = new OAuthService;
-    $refreshed = $oauthService->refreshTokens($connection);
+    $refreshed    = $oauthService->refreshTokens($connection);
 
     expect($refreshed->access_token)->toBe('new_access_token')
         ->and($refreshed->refresh_token)->toBe('refresh_token');
@@ -256,7 +256,7 @@ it('handles missing refresh token in response', function () {
 it('handles missing expires_in in token response', function () {
     Http::fake([
         'moneybird.com/oauth/token' => Http::response([
-            'access_token' => 'new_access_token',
+            'access_token'  => 'new_access_token',
             'refresh_token' => 'new_refresh_token',
         ], 200),
     ]);

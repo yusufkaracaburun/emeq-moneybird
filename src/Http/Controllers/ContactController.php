@@ -23,8 +23,8 @@ class ContactController
      */
     public function index(FilterContactRequest $request): JsonResponse
     {
-        $service = $this->getService($request);
-        $filters = array_filter($request->validated());
+        $service  = $this->getService($request);
+        $filters  = array_filter($request->validated());
         $contacts = $service->contacts()->list($filters);
 
         return $this->success(new ContactCollection($contacts), 'Contacts listed');
@@ -46,9 +46,9 @@ class ContactController
      */
     public function search(SearchContactRequest $request): JsonResponse
     {
-        $service = $this->getService($request);
+        $service   = $this->getService($request);
         $validated = $request->validated();
-        $contacts = $service->contacts()->search($validated['q']);
+        $contacts  = $service->contacts()->search($validated['q']);
 
         return $this->success(new ContactCollection($contacts), 'Contacten gezocht');
     }

@@ -23,7 +23,7 @@ class FilterSalesInvoiceRequest extends FormRequest
     {
         return [
             'contact_id' => ['nullable', 'string'],
-            'state' => ['nullable', 'string', 'max:255'],
+            'state'      => ['nullable', 'string', 'max:255'],
             'invoice_id' => ['nullable', 'string', 'max:255'],
         ];
     }

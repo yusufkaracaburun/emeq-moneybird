@@ -32,8 +32,8 @@ class MoneybirdConnection extends Model
 
     protected $casts = [
         'expires_at' => 'datetime',
-        'is_active' => 'boolean',
-        'metadata' => 'array',
+        'is_active'  => 'boolean',
+        'metadata'   => 'array',
     ];
 
     public function user(): BelongsTo

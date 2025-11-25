@@ -17,7 +17,7 @@ class ConnectCommand extends Command
     {
         $this->info('Starting Moneybird OAuth connection...');
 
-        $state = \Illuminate\Support\Str::random(40);
+        $state            = \Illuminate\Support\Str::random(40);
         $authorizationUrl = $oauthService->getAuthorizationUrl($state);
 
         $this->info('Please visit the following URL to authorize:');

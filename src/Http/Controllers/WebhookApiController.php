@@ -20,7 +20,7 @@ class WebhookApiController
      */
     public function index(Request $request): JsonResponse
     {
-        $service = $this->getService($request);
+        $service  = $this->getService($request);
         $webhooks = $service->webhooks()->list();
 
         return $this->success(new WebhookCollection($webhooks), 'Webhooks listed');

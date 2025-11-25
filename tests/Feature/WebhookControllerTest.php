@@ -13,7 +13,7 @@ beforeEach(function () {
 it('can handle webhook request', function () {
     $payload = [
         'event' => 'sales_invoice.created',
-        'data' => ['id' => '123'],
+        'data'  => ['id' => '123'],
     ];
 
     $signature = hash_hmac('sha256', json_encode($payload), 'test_secret');
@@ -31,7 +31,7 @@ it('can handle webhook request', function () {
 it('validates webhook signature', function () {
     $payload = [
         'event' => 'sales_invoice.created',
-        'data' => ['id' => '123'],
+        'data'  => ['id' => '123'],
     ];
 
     $response = $this->postJson('/moneybird/webhook', $payload, [
@@ -54,7 +54,7 @@ it('handles webhook without secret configured', function () {
 
     $payload = [
         'event' => 'unknown.event',
-        'data' => ['id' => '123'],
+        'data'  => ['id' => '123'],
     ];
 
     $response = $this->postJson('/moneybird/webhook', $payload);
@@ -66,7 +66,7 @@ it('handles webhook without secret configured', function () {
 it('dispatches specific event for contact.created', function () {
     $payload = [
         'event' => 'contact.created',
-        'data' => ['id' => '123'],
+        'data'  => ['id' => '123'],
     ];
 
     $signature = hash_hmac('sha256', json_encode($payload), 'test_secret');
@@ -82,7 +82,7 @@ it('dispatches specific event for contact.created', function () {
 it('dispatches specific event for contact.updated', function () {
     $payload = [
         'event' => 'contact.updated',
-        'data' => ['id' => '123'],
+        'data'  => ['id' => '123'],
     ];
 
     $signature = hash_hmac('sha256', json_encode($payload), 'test_secret');
@@ -98,7 +98,7 @@ it('dispatches specific event for contact.updated', function () {
 it('dispatches generic event for unknown event type', function () {
     $payload = [
         'event' => 'unknown.event',
-        'data' => ['id' => '123'],
+        'data'  => ['id' => '123'],
     ];
 
     $signature = hash_hmac('sha256', json_encode($payload), 'test_secret');
@@ -114,7 +114,7 @@ it('dispatches generic event for unknown event type', function () {
 it('handles missing signature header when secret is configured', function () {
     $payload = [
         'event' => 'sales_invoice.created',
-        'data' => ['id' => '123'],
+        'data'  => ['id' => '123'],
     ];
 
     $response = $this->postJson('/moneybird/webhook', $payload);

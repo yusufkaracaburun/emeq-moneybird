@@ -30,10 +30,10 @@ trait ApiResponser
     {
         return response()->json([
             'is_success' => true,
-            'status' => $code,
+            'status'     => $code,
             'statusText' => 'Success',
-            'message' => $message,
-            'data' => $this->formatPayload($data, request()),
+            'message'    => $message,
+            'data'       => $this->formatPayload($data, request()),
         ], $code);
     }
 
@@ -56,10 +56,10 @@ trait ApiResponser
     {
         return response()->json([
             'is_success' => false,
-            'status' => $code,
+            'status'     => $code,
             'statusText' => 'Error',
-            'message' => $message,
-            'data' => $this->formatPayload($data, request()),
+            'message'    => $message,
+            'data'       => $this->formatPayload($data, request()),
         ], $code);
     }
 
@@ -70,10 +70,10 @@ trait ApiResponser
     {
         return response()->json([
             'is_success' => true,
-            'status' => $code,
+            'status'     => $code,
             'statusText' => 'Success',
-            'message' => $message,
-            'data' => null,
+            'message'    => $message,
+            'data'       => null,
         ], $code);
     }
 
@@ -101,7 +101,7 @@ trait ApiResponser
     protected function downloadFile(string $contents, string $filename, string $mimeType): Response
     {
         return response($contents, Response::HTTP_OK, [
-            'Content-Type' => $mimeType,
+            'Content-Type'        => $mimeType,
             'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         ]);
     }

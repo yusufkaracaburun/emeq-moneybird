@@ -12,13 +12,15 @@ class AdministrationResource extends MoneybirdResource
     protected function getFields(): array
     {
         return [
-            'id' => 'id',
-            'name' => 'name',
-            'language' => 'language',
-            'currency' => 'currency',
-            'time_zone' => ['time_zone', 'timezone'],
-            'created_at' => 'created_at',
-            'updated_at' => 'updated_at',
+            'id'                  => 'id',
+            'name'                => 'name',
+            'language'            => 'language',
+            'currency'            => 'currency',
+            'country'             => 'country',
+            'time_zone'           => 'time_zone',
+            'access'              => 'access',
+            'suspended'           => 'suspended',
+            'period_locked_until' => 'period_locked_until',
         ];
     }
 }

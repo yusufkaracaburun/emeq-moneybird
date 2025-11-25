@@ -1,0 +1,30 @@
+{
+    "preset": "laravel",
+    "exclude": ["build", "vendor", ".github"],
+    "rules": {
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "binary_operator_spaces": {
+            "default": "single_space",
+            "operators": {
+                "=": "align_single_space_minimal",
+                "=>": "align_single_space_minimal"
+            }
+        },
+        "blank_line_before_statement": {
+            "statements": [
+                "break",
+                "continue",
+                "declare",
+                "return",
+                "throw",
+                "try",
+                "while",
+                "for",
+                "foreach",
+                "if"
+            ]
+        }
+    }
+}

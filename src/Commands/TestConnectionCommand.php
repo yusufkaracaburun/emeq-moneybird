@@ -18,8 +18,8 @@ class TestConnectionCommand extends Command
     {
         try {
             $connectionId = $this->option('connection-id');
-            $userId = $this->option('user-id') ? (int) $this->option('user-id') : null;
-            $tenantId = $this->option('tenant-id');
+            $userId       = $this->option('user-id') ? (int) $this->option('user-id') : null;
+            $tenantId     = $this->option('tenant-id');
 
             if ($connectionId) {
                 $moneybirdService->connection(null, null, (int) $connectionId);

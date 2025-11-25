@@ -22,14 +22,14 @@ class StoreSalesInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'contact_id' => ['nullable', 'string'],
-            'invoice_id' => ['nullable', 'string', 'max:255'],
-            'state' => ['nullable', 'string', 'max:255'],
-            'invoice_date' => ['nullable', 'date'],
-            'due_date' => ['nullable', 'date'],
+            'contact_id'           => ['nullable', 'string'],
+            'invoice_id'           => ['nullable', 'string', 'max:255'],
+            'state'                => ['nullable', 'string', 'max:255'],
+            'invoice_date'         => ['nullable', 'date'],
+            'due_date'             => ['nullable', 'date'],
             'total_price_excl_tax' => ['nullable', 'numeric'],
             'total_price_incl_tax' => ['nullable', 'numeric'],
-            'currency' => ['nullable', 'string', 'max:3'],
+            'currency'             => ['nullable', 'string', 'max:3'],
         ];
     }
 }

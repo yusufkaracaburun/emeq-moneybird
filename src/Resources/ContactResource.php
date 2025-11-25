@@ -30,7 +30,7 @@ class ContactResource
      */
     public function find(string $id): Contact
     {
-        $contact = $this->client->contact();
+        $contact     = $this->client->contact();
         $contact->id = $id;
 
         return $contact->find($id);
@@ -62,9 +62,9 @@ class ContactResource
      */
     public function update(string $id, array $attributes): Contact
     {
-        $contact = $this->client->contact();
+        $contact     = $this->client->contact();
         $contact->id = $id;
-        $contact = $contact->find($id);
+        $contact     = $contact->find($id);
 
         foreach ($attributes as $key => $value) {
             $contact->$key = $value;
@@ -80,9 +80,9 @@ class ContactResource
      */
     public function delete(string $id): bool
     {
-        $contact = $this->client->contact();
+        $contact     = $this->client->contact();
         $contact->id = $id;
-        $contact = $contact->find($id);
+        $contact     = $contact->find($id);
 
         return $contact->delete();
     }

@@ -55,9 +55,9 @@ class MoneybirdServiceProvider extends PackageServiceProvider
             return;
         }
 
-        $configPath = config_path('moneybird.php');
+        $configPath    = config_path('moneybird.php');
         $migrationPath = database_path('migrations');
-        $routesDir = base_path('routes/moneybird');
+        $routesDir     = base_path('routes/moneybird');
         $webRoutesPath = base_path('routes/moneybird/web.php');
         $apiRoutesPath = base_path('routes/moneybird/api.php');
 
@@ -69,15 +69,16 @@ class MoneybirdServiceProvider extends PackageServiceProvider
         }
 
         $migrationExists = false;
+
         if (is_dir($migrationPath)) {
-            $files = glob($migrationPath.'/*_create_moneybird_connections_table.php');
+            $files           = glob($migrationPath.'/*_create_moneybird_connections_table.php');
             $migrationExists = ! empty($files);
         }
 
         if (! $migrationExists && is_dir($migrationPath)) {
             try {
                 $migrationFileName = date('Y_m_d_His').'_create_moneybird_connections_table.php';
-                $targetPath = $migrationPath.'/'.$migrationFileName;
+                $targetPath        = $migrationPath.'/'.$migrationFileName;
 
                 $stubContent = file_get_contents(__DIR__.'/../database/migrations/create_moneybird_connections_table.php.stub');
                 file_put_contents($targetPath, $stubContent);
@@ -108,7 +109,7 @@ class MoneybirdServiceProvider extends PackageServiceProvider
      */
     protected function loadRoutes(): void
     {
-        $appWebRoutesPath = base_path('routes/moneybird/web.php');
+        $appWebRoutesPath     = base_path('routes/moneybird/web.php');
         $packageWebRoutesPath = __DIR__.'/../routes/web.php';
 
         if (file_exists($appWebRoutesPath)) {
@@ -117,7 +118,7 @@ class MoneybirdServiceProvider extends PackageServiceProvider
             $this->loadRoutesFrom($packageWebRoutesPath);
         }
 
-        $appApiRoutesPath = base_path('routes/moneybird/api.php');
+        $appApiRoutesPath     = base_path('routes/moneybird/api.php');
         $packageApiRoutesPath = __DIR__.'/../routes/api.php';
 
         if (file_exists($appApiRoutesPath)) {

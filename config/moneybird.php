@@ -8,7 +8,7 @@ return [
         'client_secret' => env('MONEYBIRD_CLIENT_SECRET', null),
         // @phpstan-ignore-next-line
         'redirect_uri' => env('MONEYBIRD_REDIRECT_URI', null),
-        'scopes' => [
+        'scopes'       => [
             'sales_invoices',
             'bank',
             'time_entries',
@@ -27,6 +27,6 @@ return [
     'webhook' => [
         // @phpstan-ignore-next-line
         'secret' => env('MONEYBIRD_WEBHOOK_SECRET', null),
-        'route' => '/moneybird/webhook',
+        'route'  => '/moneybird/webhook',
     ],
 ];

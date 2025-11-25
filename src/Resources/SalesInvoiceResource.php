@@ -32,7 +32,7 @@ class SalesInvoiceResource
      */
     public function find(string $id): SalesInvoice
     {
-        $invoice = $this->client->salesInvoice();
+        $invoice     = $this->client->salesInvoice();
         $invoice->id = $id;
 
         return $invoice->find($id);
@@ -68,9 +68,9 @@ class SalesInvoiceResource
      */
     public function update(string $id, array $attributes): SalesInvoice
     {
-        $invoice = $this->client->salesInvoice();
+        $invoice     = $this->client->salesInvoice();
         $invoice->id = $id;
-        $invoice = $invoice->find($id);
+        $invoice     = $invoice->find($id);
 
         foreach ($attributes as $key => $value) {
             $invoice->$key = $value;
@@ -86,9 +86,9 @@ class SalesInvoiceResource
      */
     public function delete(string $id): bool
     {
-        $invoice = $this->client->salesInvoice();
+        $invoice     = $this->client->salesInvoice();
         $invoice->id = $id;
-        $invoice = $invoice->find($id);
+        $invoice     = $invoice->find($id);
 
         return $invoice->delete();
     }
@@ -98,9 +98,9 @@ class SalesInvoiceResource
      */
     public function send(string $id, string|SendInvoiceOptions $deliveryMethodOrOptions = SendInvoiceOptions::METHOD_EMAIL): SalesInvoice
     {
-        $invoice = $this->client->salesInvoice();
+        $invoice     = $this->client->salesInvoice();
         $invoice->id = $id;
-        $invoice = $invoice->find($id);
+        $invoice     = $invoice->find($id);
         $invoice->sendInvoice($deliveryMethodOrOptions);
 
         return $invoice;
@@ -111,9 +111,9 @@ class SalesInvoiceResource
      */
     public function downloadPdf(string $id): string
     {
-        $invoice = $this->client->salesInvoice();
+        $invoice     = $this->client->salesInvoice();
         $invoice->id = $id;
-        $invoice = $invoice->find($id);
+        $invoice     = $invoice->find($id);
 
         return $invoice->downloadPdf();
     }
@@ -123,9 +123,9 @@ class SalesInvoiceResource
      */
     public function downloadUbl(string $id): string
     {
-        $invoice = $this->client->salesInvoice();
+        $invoice     = $this->client->salesInvoice();
         $invoice->id = $id;
-        $invoice = $invoice->find($id);
+        $invoice     = $invoice->find($id);
 
         return $invoice->downloadUbl();
     }

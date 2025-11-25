@@ -22,8 +22,8 @@ class StoreWebhookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'url' => ['required', 'url', 'max:255'],
-            'events' => ['nullable', 'array'],
+            'url'      => ['required', 'url', 'max:255'],
+            'events'   => ['nullable', 'array'],
             'events.*' => ['string'],
         ];
     }

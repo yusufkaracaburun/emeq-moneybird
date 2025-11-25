@@ -34,6 +34,7 @@ class MoneybirdService
                 if ($userId) {
                     $q->where('user_id', $userId);
                 }
+
                 if ($tenantId) {
                     $q->where('tenant_id', $tenantId);
                 }
@@ -73,7 +74,7 @@ class MoneybirdService
             throw new \Emeq\Moneybird\Exceptions\MoneybirdException('No Moneybird connection set');
         }
 
-        $connection = $this->createPicqerConnection();
+        $connection   = $this->createPicqerConnection();
         $this->client = new Moneybird($connection);
 
         return $this->client;

@@ -22,10 +22,13 @@ class FilterContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => ['nullable', 'string', 'max:255'],
-            'lastname' => ['nullable', 'string', 'max:255'],
-            'company_name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255'],
+            'per_page'         => ['nullable', 'integer', 'min:1', 'max:100'],
+            'page'             => ['nullable', 'integer'],
+            'query'            => ['nullable', 'string'],
+            'include_archived' => ['nullable', 'boolean'],
+            'todo'             => ['nullable', 'string'],
+            'contact_field'    => ['nullable', 'string'],
+            'contact_value'    => ['nullable', 'string'],
         ];
     }
 }

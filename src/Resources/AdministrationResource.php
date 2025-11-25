@@ -16,7 +16,7 @@ class AdministrationResource
      */
     public function list(): array
     {
-        $administration = $this->client->administration();
+        $administration  = $this->client->administration();
         $administrations = $administration->get();
 
         return $administrations;

@@ -12,18 +12,18 @@ class SalesInvoiceResource extends MoneybirdResource
     protected function getFields(): array
     {
         return [
-            'id' => 'id',
-            'administration_id' => 'administration_id',
-            'invoice_id' => 'invoice_id',
-            'contact_id' => 'contact_id',
-            'state' => 'state',
-            'invoice_date' => 'invoice_date',
-            'due_date' => 'due_date',
+            'id'                   => 'id',
+            'administration_id'    => 'administration_id',
+            'invoice_id'           => 'invoice_id',
+            'contact_id'           => 'contact_id',
+            'state'                => 'state',
+            'invoice_date'         => 'invoice_date',
+            'due_date'             => 'due_date',
             'total_price_excl_tax' => 'total_price_excl_tax',
             'total_price_incl_tax' => 'total_price_incl_tax',
-            'currency' => 'currency',
-            'created_at' => 'created_at',
-            'updated_at' => 'updated_at',
+            'currency'             => 'currency',
+            'created_at'           => 'created_at',
+            'updated_at'           => 'updated_at',
         ];
     }
 }

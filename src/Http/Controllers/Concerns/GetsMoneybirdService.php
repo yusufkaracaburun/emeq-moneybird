@@ -13,9 +13,9 @@ trait GetsMoneybirdService
      */
     protected function getService(Request $request): MoneybirdService
     {
-        $user = $request->user();
-        $userId = $user ? $user->id : $request->input('user_id');
-        $tenantId = $request->input('tenant_id');
+        $user         = $request->user();
+        $userId       = $user ? $user->id : $request->input('user_id');
+        $tenantId     = $request->input('tenant_id');
         $connectionId = $request->input('connection_id');
 
         if ($connectionId) {

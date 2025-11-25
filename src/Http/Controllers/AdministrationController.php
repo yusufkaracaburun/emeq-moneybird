@@ -19,7 +19,7 @@ class AdministrationController
      */
     public function index(Request $request): JsonResponse
     {
-        $service = $this->getService($request);
+        $service         = $this->getService($request);
         $administrations = $service->administrations()->list();
 
         return $this->success(new AdministrationCollection($administrations), 'Administrations fetched successfully');
@@ -30,7 +30,7 @@ class AdministrationController
      */
     public function show(Request $request, string $id): JsonResponse
     {
-        $service = $this->getService($request);
+        $service        = $this->getService($request);
         $administration = $service->administrations()->get($id);
 
         return $this->success(new AdministrationResource($administration), 'Administration fetched successfully');

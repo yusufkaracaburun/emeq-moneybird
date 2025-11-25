@@ -12,12 +12,12 @@ class WebhookResource extends MoneybirdResource
     protected function getFields(): array
     {
         return [
-            'id' => 'id',
+            'id'                => 'id',
             'administration_id' => 'administration_id',
-            'url' => 'url',
-            'events' => 'events',
-            'created_at' => 'created_at',
-            'updated_at' => 'updated_at',
+            'url'               => 'url',
+            'events'            => 'events',
+            'created_at'        => 'created_at',
+            'updated_at'        => 'updated_at',
         ];
     }
 
