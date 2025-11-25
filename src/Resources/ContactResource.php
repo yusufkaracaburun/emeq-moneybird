@@ -13,6 +13,9 @@ class ContactResource
 
     /**
      * List all contacts.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<int, Contact>
      */
     public function list(array $filters = []): array
     {
@@ -38,6 +41,8 @@ class ContactResource
 
     /**
      * Search contacts by query.
+     *
+     * @return array<int, Contact>
      */
     public function search(string $query): array
     {
@@ -48,6 +53,8 @@ class ContactResource
 
     /**
      * Create a new contact.
+     *
+     * @param  array<string, mixed>  $attributes
      */
     public function create(array $attributes): Contact
     {
@@ -59,6 +66,8 @@ class ContactResource
 
     /**
      * Update an existing contact.
+     *
+     * @param  array<string, mixed>  $attributes
      */
     public function update(string $id, array $attributes): Contact
     {

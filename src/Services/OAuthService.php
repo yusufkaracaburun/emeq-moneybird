@@ -73,7 +73,10 @@ class OAuthService
         $selectedAdministration = null;
 
         if ($administrationId) {
-            $selectedAdministration = collect($administrations)->firstWhere('id', $administrationId);
+            /** @var array<int, mixed> $administrations */
+            /** @var \Illuminate\Support\Collection<int, mixed> $collection */
+            $collection             = collect($administrations);
+            $selectedAdministration = $collection->firstWhere('id', $administrationId);
 
             if (! $selectedAdministration) {
                 throw new MoneybirdException("Administration with ID {$administrationId} not found");

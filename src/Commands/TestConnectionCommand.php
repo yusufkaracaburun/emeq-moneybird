@@ -34,7 +34,10 @@ class TestConnectionCommand extends Command
             $this->newLine();
 
             foreach ($administrations as $administration) {
-                $this->line("  - {$administration->name} (ID: {$administration->id})");
+                /** @var \Picqer\Financials\Moneybird\Entities\Administration $administration */
+                $name = isset($administration->name) ? $administration->name : 'Unknown';
+                $id   = isset($administration->id) ? (string) $administration->id : 'Unknown';
+                $this->line("  - {$name} (ID: {$id})");
             }
 
             return self::SUCCESS;

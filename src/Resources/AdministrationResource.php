@@ -13,6 +13,8 @@ class AdministrationResource
 
     /**
      * List all administrations.
+     *
+     * @return array<int, Administration>
      */
     public function list(): array
     {
@@ -30,7 +32,8 @@ class AdministrationResource
         $administrations = $this->list();
 
         foreach ($administrations as $administration) {
-            if ($administration->id === $id) {
+            /** @var Administration $administration */
+            if (isset($administration->id) && (string) $administration->id === $id) {
                 return $administration;
             }
         }

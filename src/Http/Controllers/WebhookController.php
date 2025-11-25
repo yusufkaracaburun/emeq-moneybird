@@ -62,6 +62,8 @@ class WebhookController
 
     /**
      * Dispatch webhook event.
+     *
+     * @param  array<string, mixed>  $payload
      */
     protected function dispatchWebhookEvent(string $eventType, array $payload): void
     {

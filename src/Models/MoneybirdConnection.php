@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $refresh_token
  * @property \Illuminate\Support\Carbon|null $expires_at
  * @property bool $is_active
- * @property array|null $metadata
+ * @property array<string, mixed>|null $metadata
  */
 class MoneybirdConnection extends Model
 {
@@ -36,9 +36,15 @@ class MoneybirdConnection extends Model
         'metadata'   => 'array',
     ];
 
+    /**
+     * @return BelongsTo<\Illuminate\Foundation\Auth\User, $this>
+     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(config('auth.providers.users.model'));
+        /** @var class-string<\Illuminate\Foundation\Auth\User> $userModel */
+        $userModel = config('auth.providers.users.model');
+
+        return $this->belongsTo($userModel);
     }
 
     public function isExpired(): bool

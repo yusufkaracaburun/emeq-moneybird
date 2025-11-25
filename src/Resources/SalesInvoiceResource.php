@@ -15,6 +15,9 @@ class SalesInvoiceResource
 
     /**
      * List all sales invoices.
+     *
+     * @param  array<string, mixed>  $filters
+     * @return array<int, SalesInvoice>
      */
     public function list(array $filters = []): array
     {
@@ -54,6 +57,8 @@ class SalesInvoiceResource
 
     /**
      * Create a new sales invoice.
+     *
+     * @param  array<string, mixed>  $attributes
      */
     public function create(array $attributes): SalesInvoice
     {
@@ -65,6 +70,8 @@ class SalesInvoiceResource
 
     /**
      * Update an existing sales invoice.
+     *
+     * @param  array<string, mixed>  $attributes
      */
     public function update(string $id, array $attributes): SalesInvoice
     {

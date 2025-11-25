@@ -13,6 +13,8 @@ class WebhookResource
 
     /**
      * List all webhooks.
+     *
+     * @return array<int, Webhook>
      */
     public function list(): array
     {
@@ -23,6 +25,8 @@ class WebhookResource
 
     /**
      * Create a new webhook.
+     *
+     * @param  array<string, mixed>  $attributes
      */
     public function create(array $attributes): Webhook
     {

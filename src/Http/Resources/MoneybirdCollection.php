@@ -13,14 +13,18 @@ abstract class MoneybirdCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @return array<string, mixed>
+     * @return array<int, array<string, mixed>>
      */
     public function toArray(Request $request): array
     {
         $resourceClass = $this->resourceClass();
 
-        return collect($this->collection)
-            ->map(function ($resource) use ($resourceClass, $request) {
+        /** @var \Illuminate\Support\Collection<int, mixed> $collection */
+        $collection = collect($this->collection);
+
+        /** @var array<int, array<string, mixed>> $result */
+        $result = $collection
+            ->map(function (mixed $resource) use ($resourceClass, $request): array {
                 $resourceInstance = $resource instanceof JsonResource
                     ? $resource
                     : new $resourceClass($resource);
@@ -28,5 +32,7 @@ abstract class MoneybirdCollection extends ResourceCollection
                 return $resourceInstance->toArray($request);
             })
             ->all();
+
+        return $result;
     }
 }

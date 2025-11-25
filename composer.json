@@ -58,7 +58,8 @@
         "analyse": "vendor/bin/phpstan analyse --memory-limit=512M",
         "test": "vendor/bin/pest",
         "test:coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
+        "format": "vendor/bin/pint",
+        "check:all": "composer format && composer analyse && composer test:coverage"
     },
     "config": {
         "sort-packages": true,
