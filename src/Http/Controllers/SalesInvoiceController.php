@@ -2,17 +2,17 @@
 
 namespace Emeq\Moneybird\Http\Controllers;
 
+use Emeq\Moneybird\Http\Controllers\Concerns\ApiResponser;
+use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
+use Emeq\Moneybird\Http\Requests\FilterSalesInvoiceRequest;
+use Emeq\Moneybird\Http\Requests\SendSalesInvoiceRequest;
+use Emeq\Moneybird\Http\Requests\StoreSalesInvoiceRequest;
+use Emeq\Moneybird\Http\Requests\UpdateSalesInvoiceRequest;
+use Emeq\Moneybird\Http\Resources\SalesInvoiceCollection;
+use Emeq\Moneybird\Http\Resources\SalesInvoiceResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
-use Emeq\Moneybird\Http\Resources\SalesInvoiceResource;
-use Emeq\Moneybird\Http\Requests\SendSalesInvoiceRequest;
-use Emeq\Moneybird\Http\Resources\SalesInvoiceCollection;
-use Emeq\Moneybird\Http\Controllers\Concerns\ApiResponser;
-use Emeq\Moneybird\Http\Requests\StoreSalesInvoiceRequest;
-use Emeq\Moneybird\Http\Requests\FilterSalesInvoiceRequest;
-use Emeq\Moneybird\Http\Requests\UpdateSalesInvoiceRequest;
-use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
 
 class SalesInvoiceController
 {

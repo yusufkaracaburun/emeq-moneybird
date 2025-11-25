@@ -2,16 +2,16 @@
 
 namespace Emeq\Moneybird\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Emeq\Moneybird\Http\Resources\ContactResource;
-use Emeq\Moneybird\Http\Resources\ContactCollection;
-use Emeq\Moneybird\Http\Requests\StoreContactRequest;
-use Emeq\Moneybird\Http\Requests\FilterContactRequest;
-use Emeq\Moneybird\Http\Requests\SearchContactRequest;
-use Emeq\Moneybird\Http\Requests\UpdateContactRequest;
 use Emeq\Moneybird\Http\Controllers\Concerns\ApiResponser;
 use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
+use Emeq\Moneybird\Http\Requests\FilterContactRequest;
+use Emeq\Moneybird\Http\Requests\SearchContactRequest;
+use Emeq\Moneybird\Http\Requests\StoreContactRequest;
+use Emeq\Moneybird\Http\Requests\UpdateContactRequest;
+use Emeq\Moneybird\Http\Resources\ContactCollection;
+use Emeq\Moneybird\Http\Resources\ContactResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ContactController
 {

@@ -2,11 +2,11 @@
 
 namespace Emeq\Moneybird\Http\Controllers\Concerns;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 
 trait ApiResponser
 {
@@ -24,7 +24,7 @@ trait ApiResponser
     /**
      * Return a standardized success JSON response.
      *
-     * @param  Arrayable|JsonResource|array|string|object|null $data
+     * @param  Arrayable|JsonResource|array|string|object|null  $data
      */
     protected function success($data, ?string $message = null, int $code = Response::HTTP_OK): JsonResponse
     {
@@ -40,7 +40,7 @@ trait ApiResponser
     /**
      * Return a standardized created JSON response.
      *
-     * @param  Arrayable|JsonResource|array|string|object|null $data
+     * @param  Arrayable|JsonResource|array|string|object|null  $data
      */
     protected function created($data, ?string $message = null): JsonResponse
     {
@@ -50,7 +50,7 @@ trait ApiResponser
     /**
      * Return a standardized error JSON response.
      *
-     * @param  Arrayable|JsonResource|array|string|null $data
+     * @param  Arrayable|JsonResource|array|string|null  $data
      */
     protected function error(?string $message = null, int $code = Response::HTTP_UNPROCESSABLE_ENTITY, $data = null): JsonResponse
     {
@@ -80,7 +80,7 @@ trait ApiResponser
     /**
      * Normalize payloads so they can be embedded in the API response structure.
      *
-     * @param  Arrayable|JsonResource|array|string|object|null $payload
+     * @param  Arrayable|JsonResource|array|string|object|null  $payload
      */
     protected function formatPayload($payload, ?Request $request = null)
     {
