@@ -22,9 +22,9 @@ class FilterSalesInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'contact_id' => ['nullable', 'string'],
-            'state'      => ['nullable', 'string', 'max:255'],
-            'invoice_id' => ['nullable', 'string', 'max:255'],
+            'filter'   => ['nullable', 'string'],
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'page'     => ['nullable', 'integer'],
         ];
     }
 }

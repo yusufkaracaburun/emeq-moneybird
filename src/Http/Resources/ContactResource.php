@@ -2,6 +2,12 @@
 
 namespace Emeq\Moneybird\Http\Resources;
 
+use Illuminate\Http\Request;
+use Emeq\Moneybird\Http\Resources\ContactPersonResource;
+use Emeq\Moneybird\Http\Resources\SalesInvoiceCustomFieldResource as CustomFieldResource;
+use Emeq\Moneybird\Http\Resources\SalesInvoiceEventResource as EventResource;
+use Emeq\Moneybird\Http\Resources\SalesInvoiceNoteResource as NoteResource;
+
 class ContactResource extends MoneybirdResource
 {
     /**
@@ -51,7 +57,7 @@ class ContactResource extends MoneybirdResource
             'tax_number_valid'            => 'tax_number_valid',
             'invoice_workflow_id'         => 'invoice_workflow_id',
             'estimate_workflow_id'        => 'estimate_workflow_id',
-            'si_identifier'               => 'si_identifier',
+            'si_identifier'                => 'si_identifier',
             'si_identifier_type'          => 'si_identifier_type',
             'moneybird_payments_mandate'  => 'moneybird_payments_mandate',
             'created_at'                  => 'created_at',
@@ -64,5 +70,77 @@ class ContactResource extends MoneybirdResource
             'archived'                    => 'archived',
             'events'                      => 'events',
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getDefaults(): array
+    {
+        return [
+            'notes'          => [],
+            'custom_fields'  => [],
+            'contact_people' => [],
+            'events'         => [],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        $data = parent::toArray($request);
+
+        $data['notes'] = $this->transformCollection(
+            $this->getRawAttribute('notes') ?? $data['notes'] ?? [],
+            NoteResource::class,
+            $request
+        );
+
+        $data['custom_fields'] = $this->transformCollection(
+            $this->getRawAttribute('custom_fields') ?? $data['custom_fields'] ?? [],
+            CustomFieldResource::class,
+            $request
+        );
+
+        $data['contact_people'] = $this->transformCollection(
+            $this->getRawAttribute('contact_people') ?? $data['contact_people'] ?? [],
+            ContactPersonResource::class,
+            $request
+        );
+
+        $data['events'] = $this->transformCollection(
+            $this->getRawAttribute('events') ?? $data['events'] ?? [],
+            EventResource::class,
+            $request
+        );
+
+        return $data;
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function transformCollection(mixed $items, string $resourceClass, Request $request): array
+    {
+        return collect($items ?? [])
+            ->filter(static fn ($item) => $item !== null)
+            ->map(static fn ($item) => (new $resourceClass($item))->toArray($request))
+            ->values()
+            ->all();
+    }
+
+    private function getRawAttribute(string $key): mixed
+    {
+        if (is_array($this->resource) && array_key_exists($key, $this->resource)) {
+            return $this->resource[$key];
+        }
+
+        if (is_object($this->resource) && isset($this->resource->$key)) {
+            return $this->resource->$key;
+        }
+
+        return null;
     }
 }
