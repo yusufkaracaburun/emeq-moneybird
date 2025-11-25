@@ -2,8 +2,8 @@
 
 namespace Emeq\Moneybird\Resources;
 
-use Picqer\Financials\Moneybird\Entities\Contact;
 use Picqer\Financials\Moneybird\Moneybird;
+use Picqer\Financials\Moneybird\Entities\Contact;
 
 class ContactResource
 {
@@ -93,6 +93,8 @@ class ContactResource
         $contact->id = $id;
         $contact     = $contact->find($id);
 
-        return $contact->delete();
+        $contact->delete();
+        
+        return true;
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Emeq\Moneybird\Resources;
 
+use Picqer\Financials\Moneybird\Moneybird;
 use Emeq\Moneybird\Exceptions\MoneybirdException;
 use Picqer\Financials\Moneybird\Entities\SalesInvoice;
 use Picqer\Financials\Moneybird\Entities\SalesInvoice\SendInvoiceOptions;
-use Picqer\Financials\Moneybird\Moneybird;
 
 class SalesInvoiceResource
 {
@@ -97,7 +97,11 @@ class SalesInvoiceResource
         $invoice->id = $id;
         $invoice     = $invoice->find($id);
 
-        return $invoice->delete();
+        $invoice->delete();
+
+        // Moneybird API returns 204 No Content on successful delete,
+        // so delete() returns null. Return true to indicate success.
+        return true;
     }
 
     /**
@@ -122,7 +126,7 @@ class SalesInvoiceResource
         $invoice->id = $id;
         $invoice     = $invoice->find($id);
 
-        return $invoice->downloadPdf();
+        return $invoice->download();
     }
 
     /**
@@ -134,6 +138,6 @@ class SalesInvoiceResource
         $invoice->id = $id;
         $invoice     = $invoice->find($id);
 
-        return $invoice->downloadUbl();
+        return $invoice->downloadUBL();
     }
 }

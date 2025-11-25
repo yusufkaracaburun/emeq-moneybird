@@ -45,6 +45,10 @@ class WebhookResource
         // @phpstan-ignore-next-line
         $webhook->id = $id;
 
-        return $webhook->delete();
+        $webhook->delete();
+
+        // Moneybird API returns 204 No Content on successful delete,
+        // so delete() returns null. Return true to indicate success.
+        return true;
     }
 }
