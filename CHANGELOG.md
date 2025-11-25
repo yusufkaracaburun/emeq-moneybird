@@ -5,7 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.1.0 - 2025-11-23
+## [Unreleased]
+
+## [1.1.1] - 2025-11-25
+
+### Added
+
+- `downloadFile()` helper in `ApiResponser` to centralize binary download responses
+
+### Changed
+
+- Administration, Contact, SalesInvoice, and Webhook controllers now return `success`/`noContent` responses directly via `ApiResponser`, reducing nested callback handling
+- Sales invoice download endpoints reuse the shared download helper for consistent headers
+- Expanded `ApiResponser` PHPDocs for clearer typing in consuming controllers
+
+### Fixed
+
+- Ensured all Moneybird HTTP controllers return unified JSON payloads, preventing mismatched response structures between endpoints
+
+## [1.1.0] - 2025-11-23
 
 ### Added
 
@@ -30,8 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed unnecessary null checks flagged by PHPStan
 - Fixed PHPStan static analysis errors
-
-## [Unreleased]
 
 ## [1.1.0] - 2025-01-23
 
