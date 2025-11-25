@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.1.3 - 2025-11-26
+
+### Changed
+
+- Code improvements and hardening updates
+- Fixed styling issues
+- Updated Pint rules for code formatting
+
 ## [Unreleased]
 
 ## [1.1.3] - 2025-11-26
@@ -42,13 +50,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Laravel API Resources (JsonResource) for consistent JSON responses
-    - `AdministrationResource`, `ContactResource`, `SalesInvoiceResource`, `WebhookResource`
-    - Base `MoneybirdResource` class following DRY and SOLID principles
-    - Resource Collections for list endpoints
+  - `AdministrationResource`, `ContactResource`, `SalesInvoiceResource`, `WebhookResource`
+  - Base `MoneybirdResource` class following DRY and SOLID principles
+  - Resource Collections for list endpoints
+  
 - Form Request classes for input validation
-    - `StoreContactRequest`, `UpdateContactRequest`, `SearchContactRequest`, `FilterContactRequest`
-    - `StoreSalesInvoiceRequest`, `UpdateSalesInvoiceRequest`, `SendSalesInvoiceRequest`, `FilterSalesInvoiceRequest`
-    - `StoreWebhookRequest`
+  - `StoreContactRequest`, `UpdateContactRequest`, `SearchContactRequest`, `FilterContactRequest`
+  - `StoreSalesInvoiceRequest`, `UpdateSalesInvoiceRequest`, `SendSalesInvoiceRequest`, `FilterSalesInvoiceRequest`
+  - `StoreWebhookRequest`
+  
 - Base `MoneybirdCollection` class for consistent collection responses
 
 ### Changed
@@ -68,13 +78,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 
 - Laravel API Resources (JsonResource) for consistent JSON responses
-    - `AdministrationResource`, `ContactResource`, `SalesInvoiceResource`, `WebhookResource`
-    - Base `MoneybirdResource` class following DRY and SOLID principles
-    - Resource Collections for list endpoints
+  - `AdministrationResource`, `ContactResource`, `SalesInvoiceResource`, `WebhookResource`
+  - Base `MoneybirdResource` class following DRY and SOLID principles
+  - Resource Collections for list endpoints
+  
 - Form Request classes for input validation
-    - `StoreContactRequest`, `UpdateContactRequest`, `SearchContactRequest`, `FilterContactRequest`
-    - `StoreSalesInvoiceRequest`, `UpdateSalesInvoiceRequest`, `SendSalesInvoiceRequest`, `FilterSalesInvoiceRequest`
-    - `StoreWebhookRequest`
+  - `StoreContactRequest`, `UpdateContactRequest`, `SearchContactRequest`, `FilterContactRequest`
+  - `StoreSalesInvoiceRequest`, `UpdateSalesInvoiceRequest`, `SendSalesInvoiceRequest`, `FilterSalesInvoiceRequest`
+  - `StoreWebhookRequest`
+  
 - Base `MoneybirdCollection` class for consistent collection responses
 
 #### Changed
@@ -97,14 +109,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Database-backed token storage with `moneybird_connections` table
 - Support for multiple administrations per user/tenant
 - Resource classes for Moneybird API endpoints:
-    - Administrations (list, get)
-    - Contacts (CRUD operations, search)
-    - Sales Invoices (create, update, send, download)
-    - Webhooks (create, list, delete)
+  - Administrations (list, get)
+  - Contacts (CRUD operations, search)
+  - Sales Invoices (create, update, send, download)
+  - Webhooks (create, list, delete)
+  
 - Artisan commands:
-    - `moneybird:connect` - Connect to Moneybird via OAuth
-    - `moneybird:test-connection` - Test an existing connection
-    - `moneybird:refresh-tokens` - Refresh expired tokens
+  - `moneybird:connect` - Connect to Moneybird via OAuth
+  - `moneybird:test-connection` - Test an existing connection
+  - `moneybird:refresh-tokens` - Refresh expired tokens
+  
 - Webhook handling with signature validation
 - Laravel events for webhook types (SalesInvoiceCreated, ContactUpdated, etc.)
 - Auto-publishing of config and migration files on package installation
