@@ -13,9 +13,9 @@ trait ApiResponser
     /**
      * Used to return success response
      *
-     * @param  array<string, mixed>|string|object|null  $items
+     * @param  Arrayable<string, mixed>|JsonResource|array<string, mixed>|string|object|null  $items
      */
-    public function ok(array|string|object|null $items = null): JsonResponse
+    public function ok(mixed $items = null): JsonResponse
     {
         //        return response()->json($items)->setEncodingOptions(JSON_NUMERIC_CHECK);
         return response()->json($items);
@@ -26,7 +26,7 @@ trait ApiResponser
      *
      * @param  Arrayable<string, mixed>|JsonResource|array<string, mixed>|string|object|null  $data
      */
-    protected function success(Arrayable|JsonResource|array|string|object|null $data, ?string $message = null, int $code = Response::HTTP_OK): JsonResponse
+    protected function success(mixed $data, ?string $message = null, int $code = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
             'is_success' => true,
@@ -42,7 +42,7 @@ trait ApiResponser
      *
      * @param  Arrayable<string, mixed>|JsonResource|array<string, mixed>|string|object|null  $data
      */
-    protected function created(Arrayable|JsonResource|array|string|object|null $data, ?string $message = null): JsonResponse
+    protected function created(mixed $data, ?string $message = null): JsonResponse
     {
         return $this->success($data, $message, Response::HTTP_CREATED);
     }
@@ -52,7 +52,7 @@ trait ApiResponser
      *
      * @param  Arrayable<string, mixed>|JsonResource|array<string, mixed>|string|null  $data
      */
-    protected function error(?string $message = null, int $code = Response::HTTP_UNPROCESSABLE_ENTITY, Arrayable|JsonResource|array|string|null $data = null): JsonResponse
+    protected function error(?string $message = null, int $code = Response::HTTP_UNPROCESSABLE_ENTITY, mixed $data = null): JsonResponse
     {
         return response()->json([
             'is_success' => false,
@@ -83,7 +83,7 @@ trait ApiResponser
      * @param  Arrayable<string, mixed>|JsonResource|array<string, mixed>|string|object|null  $payload
      * @return array<string, mixed>|string|object|null
      */
-    protected function formatPayload(Arrayable|JsonResource|array|string|object|null $payload, ?Request $request = null): array|string|object|null
+    protected function formatPayload(mixed $payload, ?Request $request = null): array|string|object|null
     {
         if ($payload instanceof JsonResource) {
             return $payload->resolve($request ?? request());
