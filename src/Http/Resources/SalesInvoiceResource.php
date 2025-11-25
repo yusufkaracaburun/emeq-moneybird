@@ -105,6 +105,18 @@ class SalesInvoiceResource extends MoneybirdResource
     {
         $data = parent::toArray($request);
 
+        // Ensure invoice_id is extracted from raw attribute if available
+        // Moneybird may provide invoice_id even for drafts in some cases
+        $rawInvoiceId = $this->getRawAttribute('invoice_id');
+        if ($rawInvoiceId !== null && empty($data['invoice_id'])) {
+            $data['invoice_id'] = $rawInvoiceId;
+        }
+
+        // Translate state to Dutch
+        if (isset($data['state'])) {
+            $data['state'] = $this->translateState($data['state']);
+        }
+
         $data['contact'] = $this->transformResource(
             $this->getRawAttribute('contact') ?? $data['contact'] ?? null,
             ContactResource::class,
@@ -205,5 +217,23 @@ class SalesInvoiceResource extends MoneybirdResource
         }
 
         return null;
+    }
+
+    /**
+     * Translate state value from English to Dutch.
+     */
+    private function translateState(string $state): string
+    {
+        return match ($state) {
+            'draft' => 'Concept',
+            'scheduled' => 'Gepland',
+            'open' => 'Open',
+            'pending_payment' => 'In afwachting van betaling',
+            'reminded' => 'Herinnerd',
+            'late' => 'Achterstallig',
+            'paid' => 'Betaald',
+            'uncollectible' => 'Oninbaar',
+            default => $state,
+        };
     }
 }
