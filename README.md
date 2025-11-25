@@ -1,5 +1,7 @@
 # EMEQ Moneybird
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/emeq/moneybird.svg?style=flat-square)](https://packagist.org/packages/emeq/moneybird)
+
 Laravel package for Moneybird integration with OAuth token management and extended API features.
 
 ## Installation
@@ -187,6 +189,7 @@ The package includes reusable Vue components for displaying integrations in your
 **IntegrationCard Component** (`resources/views/IntegrationCard.vue`)
 
 A Vue component for displaying integration information in a card format or connection prompt. It supports:
+
 - Integration logos (with automatic placeholder for missing logos)
 - Clickable integration names with external links
 - Connection status display
@@ -206,14 +209,14 @@ A Vue component for displaying integration information in a card format or conne
             url: 'https://www.moneybird.com/',
             available: true,
             connected: false,
-            connectUrl: '/moneybird/connect'
+            connectUrl: '/moneybird/connect',
         }"
         @click="handleIntegrationClick"
     />
 </template>
 
 <script>
-import IntegrationCard from 'vendor/emeq/moneybird/resources/views/IntegrationCard.vue';
+import IntegrationCard from "vendor/emeq/moneybird/resources/views/IntegrationCard.vue";
 
 export default {
     components: {
@@ -241,14 +244,14 @@ export default {
             url: 'https://www.moneybird.com/',
             available: true,
             connected: false,
-            connectUrl: '/moneybird/connect'
+            connectUrl: '/moneybird/connect',
         }"
         :show-prompt="true"
     />
 </template>
 
 <script>
-import IntegrationCard from 'vendor/emeq/moneybird/resources/views/IntegrationCard.vue';
+import IntegrationCard from "vendor/emeq/moneybird/resources/views/IntegrationCard.vue";
 
 export default {
     components: {
@@ -262,17 +265,16 @@ export default {
 
 ```typescript
 interface Integration {
-    id: string;                    // Unique identifier (e.g., 'moneybird', 'mollie')
-    name: string;                  // Display name
-    description: string;           // Short description
-    logo: string;                  // Logo URL (SVG or image)
-    url: string;                   // External website URL
-    available: boolean;            // Whether integration is available
-    connected: boolean;            // Whether user has connected
-    connectUrl: string;            // URL to start connection flow
+    id: string; // Unique identifier (e.g., 'moneybird', 'mollie')
+    name: string; // Display name
+    description: string; // Short description
+    logo: string; // Logo URL (SVG or image)
+    url: string; // External website URL
+    available: boolean; // Whether integration is available
+    connected: boolean; // Whether user has connected
+    connectUrl: string; // URL to start connection flow
 }
 ```
-
 
 ### API Routes
 
