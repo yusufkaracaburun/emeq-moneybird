@@ -180,6 +180,100 @@ $webhook = $service->webhooks()->create([
 ]);
 ```
 
+### Frontend Components
+
+The package includes reusable Vue components for displaying integrations in your frontend:
+
+**IntegrationCard Component** (`resources/views/IntegrationCard.vue`)
+
+A Vue component for displaying integration information in a card format or connection prompt. It supports:
+- Integration logos (with automatic placeholder for missing logos)
+- Clickable integration names with external links
+- Connection status display
+- Action buttons (Connect/Manage for available integrations, "Coming soon" for unavailable ones)
+- Connection prompt mode (when `showPrompt` prop is true and integration is not connected)
+
+**Usage Example - Card Mode:**
+
+```vue
+<template>
+    <IntegrationCard
+        :integration="{
+            id: 'moneybird',
+            name: 'Moneybird',
+            description: 'Boekhouding en facturering',
+            logo: 'https://moneybird.cdn.prismic.io/moneybird/ZkXWvyol0Zci9Mhv_vertical_birdblue.svg',
+            url: 'https://www.moneybird.com/',
+            available: true,
+            connected: false,
+            connectUrl: '/moneybird/connect'
+        }"
+        @click="handleIntegrationClick"
+    />
+</template>
+
+<script>
+import IntegrationCard from 'vendor/emeq/moneybird/resources/views/IntegrationCard.vue';
+
+export default {
+    components: {
+        IntegrationCard,
+    },
+    methods: {
+        handleIntegrationClick(integrationId) {
+            // Handle integration click
+        },
+    },
+};
+</script>
+```
+
+**Usage Example - Connection Prompt Mode:**
+
+```vue
+<template>
+    <IntegrationCard
+        :integration="{
+            id: 'moneybird',
+            name: 'Moneybird',
+            description: 'Boekhouding en facturering',
+            logo: 'https://moneybird.cdn.prismic.io/moneybird/ZkXWvyol0Zci9Mhv_vertical_birdblue.svg',
+            url: 'https://www.moneybird.com/',
+            available: true,
+            connected: false,
+            connectUrl: '/moneybird/connect'
+        }"
+        :show-prompt="true"
+    />
+</template>
+
+<script>
+import IntegrationCard from 'vendor/emeq/moneybird/resources/views/IntegrationCard.vue';
+
+export default {
+    components: {
+        IntegrationCard,
+    },
+};
+</script>
+```
+
+**Integration Object Structure:**
+
+```typescript
+interface Integration {
+    id: string;                    // Unique identifier (e.g., 'moneybird', 'mollie')
+    name: string;                  // Display name
+    description: string;           // Short description
+    logo: string;                  // Logo URL (SVG or image)
+    url: string;                   // External website URL
+    available: boolean;            // Whether integration is available
+    connected: boolean;            // Whether user has connected
+    connectUrl: string;            // URL to start connection flow
+}
+```
+
+
 ### API Routes
 
 The package provides RESTful API routes for accessing Moneybird data. All routes are prefixed with `/api/moneybird` and require Laravel Sanctum authentication.

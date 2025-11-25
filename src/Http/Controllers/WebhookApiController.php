@@ -2,15 +2,18 @@
 
 namespace Emeq\Moneybird\Http\Controllers;
 
-use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
-use Emeq\Moneybird\Http\Requests\StoreWebhookRequest;
-use Emeq\Moneybird\Http\Resources\WebhookCollection;
-use Emeq\Moneybird\Http\Resources\WebhookResource;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Emeq\Moneybird\Http\Resources\WebhookResource;
+use Emeq\Moneybird\Http\Resources\WebhookCollection;
+use Emeq\Moneybird\Http\Requests\StoreWebhookRequest;
+use Emeq\Moneybird\Http\Controllers\Concerns\ApiResponser;
+use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
+
 
 class WebhookApiController
 {
+    use ApiResponser;
     use GetsMoneybirdService;
 
     /**
@@ -18,19 +21,10 @@ class WebhookApiController
      */
     public function index(Request $request): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $webhooks = $service->webhooks()->list();
+        $service = $this->getService($request);
+        $webhooks = $service->webhooks()->list();
 
-            return (new WebhookCollection($webhooks))
-                ->response()
-                ->setStatusCode(200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->success(new WebhookCollection($webhooks), 'Webhooks listed');
     }
 
     /**
@@ -38,19 +32,10 @@ class WebhookApiController
      */
     public function store(StoreWebhookRequest $request): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $webhook = $service->webhooks()->create($request->validated());
+        $service = $this->getService($request);
+        $webhook = $service->webhooks()->create($request->validated());
 
-            return (new WebhookResource($webhook))
-                ->response()
-                ->setStatusCode(201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->created(new WebhookResource($webhook), 'Webhook created');
     }
 
     /**
@@ -58,19 +43,9 @@ class WebhookApiController
      */
     public function destroy(Request $request, string $id): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $service->webhooks()->delete($id);
+        $service = $this->getService($request);
+        $service->webhooks()->delete($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Webhook deleted successfully',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->noContent('Webhook deleted successfully');
     }
 }

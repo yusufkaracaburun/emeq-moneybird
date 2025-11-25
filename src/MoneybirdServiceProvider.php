@@ -8,6 +8,7 @@ use Emeq\Moneybird\Commands\TestConnectionCommand;
 use Emeq\Moneybird\Http\Controllers\WebhookController;
 use Emeq\Moneybird\Services\MoneybirdService;
 use Emeq\Moneybird\Services\OAuthService;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -39,6 +40,8 @@ class MoneybirdServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
+        JsonResource::withoutWrapping();
+
         $this->loadRoutes();
         $this->autoPublishAssets();
     }

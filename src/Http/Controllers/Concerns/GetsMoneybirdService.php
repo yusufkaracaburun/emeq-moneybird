@@ -22,8 +22,12 @@ trait GetsMoneybirdService
             return Moneybird::connection(connectionId: $connectionId);
         }
 
-        if ($userId || $tenantId) {
-            return Moneybird::connection($userId, $tenantId);
+        if ($userId) {
+            return Moneybird::connection(userId: $userId);
+        }
+
+        if ($tenantId) {
+            return Moneybird::connection(tenantId: $tenantId);
         }
 
         return Moneybird::connection();

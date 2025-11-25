@@ -2,19 +2,21 @@
 
 namespace Emeq\Moneybird\Http\Controllers;
 
-use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
-use Emeq\Moneybird\Http\Requests\FilterSalesInvoiceRequest;
-use Emeq\Moneybird\Http\Requests\SendSalesInvoiceRequest;
-use Emeq\Moneybird\Http\Requests\StoreSalesInvoiceRequest;
-use Emeq\Moneybird\Http\Requests\UpdateSalesInvoiceRequest;
-use Emeq\Moneybird\Http\Resources\SalesInvoiceCollection;
-use Emeq\Moneybird\Http\Resources\SalesInvoiceResource;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Emeq\Moneybird\Http\Resources\SalesInvoiceResource;
+use Emeq\Moneybird\Http\Requests\SendSalesInvoiceRequest;
+use Emeq\Moneybird\Http\Resources\SalesInvoiceCollection;
+use Emeq\Moneybird\Http\Controllers\Concerns\ApiResponser;
+use Emeq\Moneybird\Http\Requests\StoreSalesInvoiceRequest;
+use Emeq\Moneybird\Http\Requests\FilterSalesInvoiceRequest;
+use Emeq\Moneybird\Http\Requests\UpdateSalesInvoiceRequest;
+use Emeq\Moneybird\Http\Controllers\Concerns\GetsMoneybirdService;
 
 class SalesInvoiceController
 {
+    use ApiResponser;
     use GetsMoneybirdService;
 
     /**
@@ -22,20 +24,11 @@ class SalesInvoiceController
      */
     public function index(FilterSalesInvoiceRequest $request): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $filters = array_filter($request->validated());
-            $invoices = $service->salesInvoices()->list($filters);
+        $service = $this->getService($request);
+        $filters = array_filter($request->validated());
+        $invoices = $service->salesInvoices()->list($filters);
 
-            return (new SalesInvoiceCollection($invoices))
-                ->response()
-                ->setStatusCode(200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->success(new SalesInvoiceCollection($invoices), 'Sales invoices listed');
     }
 
     /**
@@ -43,19 +36,10 @@ class SalesInvoiceController
      */
     public function show(Request $request, string $id): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $invoice = $service->salesInvoices()->find($id);
+        $service = $this->getService($request);
+        $invoice = $service->salesInvoices()->find($id);
 
-            return (new SalesInvoiceResource($invoice))
-                ->response()
-                ->setStatusCode(200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->success(new SalesInvoiceResource($invoice), 'Sales invoice gevonden');
     }
 
     /**
@@ -63,19 +47,10 @@ class SalesInvoiceController
      */
     public function findByInvoiceId(Request $request, string $invoiceId): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $invoice = $service->salesInvoices()->findByInvoiceId($invoiceId);
+        $service = $this->getService($request);
+        $invoice = $service->salesInvoices()->findByInvoiceId($invoiceId);
 
-            return (new SalesInvoiceResource($invoice))
-                ->response()
-                ->setStatusCode(200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->success(new SalesInvoiceResource($invoice), 'Sales invoice gevonden');
     }
 
     /**
@@ -83,19 +58,10 @@ class SalesInvoiceController
      */
     public function store(StoreSalesInvoiceRequest $request): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $invoice = $service->salesInvoices()->create($request->validated());
+        $service = $this->getService($request);
+        $invoice = $service->salesInvoices()->create($request->validated());
 
-            return (new SalesInvoiceResource($invoice))
-                ->response()
-                ->setStatusCode(201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->created(new SalesInvoiceResource($invoice), 'Sales invoice created');
     }
 
     /**
@@ -103,19 +69,10 @@ class SalesInvoiceController
      */
     public function update(UpdateSalesInvoiceRequest $request, string $id): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $invoice = $service->salesInvoices()->update($id, $request->validated());
+        $service = $this->getService($request);
+        $invoice = $service->salesInvoices()->update($id, $request->validated());
 
-            return (new SalesInvoiceResource($invoice))
-                ->response()
-                ->setStatusCode(200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->success(new SalesInvoiceResource($invoice), 'Sales invoice updated');
     }
 
     /**
@@ -123,20 +80,10 @@ class SalesInvoiceController
      */
     public function destroy(Request $request, string $id): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $service->salesInvoices()->delete($id);
+        $service = $this->getService($request);
+        $service->salesInvoices()->delete($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Sales invoice deleted successfully',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->noContent('Sales invoice deleted successfully');
     }
 
     /**
@@ -144,66 +91,32 @@ class SalesInvoiceController
      */
     public function send(SendSalesInvoiceRequest $request, string $id): JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $validated = $request->validated();
-            $invoice = $service->salesInvoices()->send($id, $validated['delivery_method']);
+        $service = $this->getService($request);
+        $validated = $request->validated();
+        $invoice = $service->salesInvoices()->send($id, $validated['delivery_method']);
 
-            return (new SalesInvoiceResource($invoice))
-                ->additional(['message' => 'Sales invoice sent successfully'])
-                ->response()
-                ->setStatusCode(200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        return $this->success(new SalesInvoiceResource($invoice), 'Sales invoice sent successfully');
     }
 
     /**
      * Download a sales invoice as PDF.
      */
-    public function downloadPdf(Request $request, string $id): Response
+    public function downloadPdf(Request $request, string $id): Response|JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $pdf = $service->salesInvoices()->downloadPdf($id);
+        $service = $this->getService($request);
+        $pdf = $service->salesInvoices()->downloadPdf($id);
 
-            return response($pdf, 200, [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment; filename="invoice-'.$id.'.pdf"',
-            ]);
-        } catch (\Exception $e) {
-            return response(json_encode([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ]), 500, [
-                'Content-Type' => 'application/json',
-            ]);
-        }
+        return $this->downloadFile($pdf, 'invoice-'.$id.'.pdf', 'application/pdf');
     }
 
     /**
      * Download a sales invoice as UBL.
      */
-    public function downloadUbl(Request $request, string $id): Response
+    public function downloadUbl(Request $request, string $id): Response|JsonResponse
     {
-        try {
-            $service = $this->getService($request);
-            $ubl = $service->salesInvoices()->downloadUbl($id);
+        $service = $this->getService($request);
+        $ubl = $service->salesInvoices()->downloadUbl($id);
 
-            return response($ubl, 200, [
-                'Content-Type' => 'application/xml',
-                'Content-Disposition' => 'attachment; filename="invoice-'.$id.'.ubl"',
-            ]);
-        } catch (\Exception $e) {
-            return response(json_encode([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ]), 500, [
-                'Content-Type' => 'application/json',
-            ]);
-        }
+        return $this->downloadFile($ubl, 'invoice-'.$id.'.ubl', 'application/xml');
     }
 }

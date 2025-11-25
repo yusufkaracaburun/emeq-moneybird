@@ -5,6 +5,13 @@ namespace Emeq\Moneybird\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Emeq\Moneybird\Events\ContactCreated;
+use Emeq\Moneybird\Events\ContactDeleted;
+use Emeq\Moneybird\Events\ContactUpdated;
+use Emeq\Moneybird\Events\SalesInvoiceCreated;
+use Emeq\Moneybird\Events\SalesInvoiceDeleted;
+use Emeq\Moneybird\Events\SalesInvoiceUpdated;
+use Emeq\Moneybird\Events\MoneybirdWebhookReceived;
 
 class WebhookController
 {
@@ -63,7 +70,7 @@ class WebhookController
         if ($eventClass && class_exists($eventClass)) {
             event(new $eventClass($payload));
         } else {
-            event(new \Emeq\Moneybird\Events\MoneybirdWebhookReceived($eventType, $payload));
+            event(new MoneybirdWebhookReceived($eventType, $payload));
         }
     }
 
@@ -73,12 +80,12 @@ class WebhookController
     protected function getEventClass(string $eventType): ?string
     {
         $eventMap = [
-            'sales_invoice.created' => \Emeq\Moneybird\Events\SalesInvoiceCreated::class,
-            'sales_invoice.updated' => \Emeq\Moneybird\Events\SalesInvoiceUpdated::class,
-            'sales_invoice.deleted' => \Emeq\Moneybird\Events\SalesInvoiceDeleted::class,
-            'contact.created' => \Emeq\Moneybird\Events\ContactCreated::class,
-            'contact.updated' => \Emeq\Moneybird\Events\ContactUpdated::class,
-            'contact.deleted' => \Emeq\Moneybird\Events\ContactDeleted::class,
+            'sales_invoice.created' => SalesInvoiceCreated::class,
+            'sales_invoice.updated' => SalesInvoiceUpdated::class,
+            'sales_invoice.deleted' => SalesInvoiceDeleted::class,
+            'contact.created' => ContactCreated::class,
+            'contact.updated' => ContactUpdated::class,
+            'contact.deleted' => ContactDeleted::class,
         ];
 
         return $eventMap[$eventType] ?? null;

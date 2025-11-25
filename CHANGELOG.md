@@ -12,13 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Added
 
 - Laravel API Resources (JsonResource) for consistent JSON responses
-  - `AdministrationResource`, `ContactResource`, `SalesInvoiceResource`, `WebhookResource`
-  - Base `MoneybirdResource` class following DRY and SOLID principles
-  - Resource Collections for list endpoints
+    - `AdministrationResource`, `ContactResource`, `SalesInvoiceResource`, `WebhookResource`
+    - Base `MoneybirdResource` class following DRY and SOLID principles
+    - Resource Collections for list endpoints
 - Form Request classes for input validation
-  - `StoreContactRequest`, `UpdateContactRequest`, `SearchContactRequest`, `FilterContactRequest`
-  - `StoreSalesInvoiceRequest`, `UpdateSalesInvoiceRequest`, `SendSalesInvoiceRequest`, `FilterSalesInvoiceRequest`
-  - `StoreWebhookRequest`
+    - `StoreContactRequest`, `UpdateContactRequest`, `SearchContactRequest`, `FilterContactRequest`
+    - `StoreSalesInvoiceRequest`, `UpdateSalesInvoiceRequest`, `SendSalesInvoiceRequest`, `FilterSalesInvoiceRequest`
+    - `StoreWebhookRequest`
 - Base `MoneybirdCollection` class for consistent collection responses
 
 #### Changed
