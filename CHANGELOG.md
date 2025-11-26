@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.2.0 - 2025-11-26
+
+### Removed
+
+- Webhook API management feature (WebhookApiController and related resources)
+  - Removed `WebhookApiController` for managing webhooks via API
+  - Removed `WebhookResource` (HTTP resource)
+  - Removed `WebhookCollection` (HTTP collection)
+  - Removed `StoreWebhookRequest` (form request)
+  - Removed `WebhookResource` (service resource)
+  - Removed webhook routes from API (`GET /api/moneybird/webhooks`, `POST /api/moneybird/webhooks`, `DELETE /api/moneybird/webhooks/{id}`)
+  - Removed `webhooks()` method from `MoneybirdService`
+  - Removed webhook API documentation from README
+  
+
+**Note:** Webhook receiving functionality (`WebhookController`) remains intact for handling incoming webhooks from Moneybird.
+
 ## v1.1.4 - 2025-11-26
 
 ### Changed
@@ -27,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Removed webhook routes from API (`GET /api/moneybird/webhooks`, `POST /api/moneybird/webhooks`, `DELETE /api/moneybird/webhooks/{id}`)
   - Removed `webhooks()` method from `MoneybirdService`
   - Removed webhook API documentation from README
+  
 
 **Note:** Webhook receiving functionality (`WebhookController`) remains intact for handling incoming webhooks from Moneybird.
 
