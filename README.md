@@ -173,13 +173,6 @@ $invoice = $service->salesInvoices()->findByInvoiceId('2023-001');
 
 // Send invoice
 $service->salesInvoices()->send($invoice->id);
-
-// Work with webhooks
-$webhooks = $service->webhooks()->list();
-$webhook = $service->webhooks()->create([
-    'url' => 'https://your-app.com/moneybird/webhook',
-    'enabled_events' => ['sales_invoice.created', 'contact.updated'],
-]);
 ```
 
 ### Frontend Components
@@ -435,33 +428,6 @@ curl -X GET "https://your-app.com/api/moneybird/sales-invoices/123456/download/p
   --output invoice.pdf
 ```
 
-##### Webhooks
-
-- `GET /api/moneybird/webhooks` - List all webhooks
-- `POST /api/moneybird/webhooks` - Create a new webhook
-- `DELETE /api/moneybird/webhooks/{id}` - Delete a webhook
-
-**Examples:**
-
-```bash
-# List webhooks
-curl -X GET "https://your-app.com/api/moneybird/webhooks" \
-  -H "Authorization: Bearer {token}"
-
-# Create a webhook
-curl -X POST "https://your-app.com/api/moneybird/webhooks" \
-  -H "Authorization: Bearer {token}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://your-app.com/moneybird/webhook",
-    "events": ["sales_invoice.created", "contact.updated"]
-  }'
-
-# Delete a webhook
-curl -X DELETE "https://your-app.com/api/moneybird/webhooks/123456" \
-  -H "Authorization: Bearer {token}"
-```
-
 ### Webhooks
 
 The package automatically registers a webhook route at `/moneybird/webhook` (configurable in `config/moneybird.php`).
@@ -497,7 +463,6 @@ Event::listen(ContactUpdated::class, function ($event) {
 - Extended API features:
     - Contacts (CRUD operations)
     - Sales Invoices (create, update, send, download, findByInvoiceId)
-    - Webhooks (create, list, delete)
     - Administrations (list, get)
 
 ## Testing

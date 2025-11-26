@@ -6,7 +6,6 @@ use Emeq\Moneybird\Models\MoneybirdConnection;
 use Emeq\Moneybird\Resources\AdministrationResource;
 use Emeq\Moneybird\Resources\ContactResource;
 use Emeq\Moneybird\Resources\SalesInvoiceResource;
-use Emeq\Moneybird\Resources\WebhookResource;
 use Picqer\Financials\Moneybird\Connection;
 use Picqer\Financials\Moneybird\Moneybird;
 
@@ -102,14 +101,6 @@ class MoneybirdService
     public function salesInvoices(): SalesInvoiceResource
     {
         return new SalesInvoiceResource($this->getClient());
-    }
-
-    /**
-     * Get webhooks resource.
-     */
-    public function webhooks(): WebhookResource
-    {
-        return new WebhookResource($this->getClient());
     }
 
     /**

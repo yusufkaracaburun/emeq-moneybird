@@ -12,6 +12,7 @@ use Emeq\Moneybird\Events\SalesInvoiceUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 
 class WebhookController
 {
@@ -50,13 +51,13 @@ class WebhookController
         $signature = $request->header('X-Moneybird-Signature');
 
         if (! $signature) {
-            throw new \RuntimeException('Missing webhook signature');
+            throw new RuntimeException('Missing webhook signature');
         }
 
         $expectedSignature = hash_hmac('sha256', $request->getContent(), $secret);
 
         if (! hash_equals($expectedSignature, $signature)) {
-            throw new \RuntimeException('Invalid webhook signature');
+            throw new RuntimeException('Invalid webhook signature');
         }
     }
 

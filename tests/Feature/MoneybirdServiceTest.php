@@ -187,24 +187,6 @@ it('can get sales invoices resource', function () {
     expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\SalesInvoiceResource::class);
 });
 
-it('can get webhooks resource', function () {
-    $connection = MoneybirdConnection::create([
-        'user_id'           => 1,
-        'name'              => 'Test Connection',
-        'administration_id' => 'admin123',
-        'access_token'      => 'test_token',
-        'expires_at'        => now()->addHour(),
-        'is_active'         => true,
-    ]);
-
-    $service = app(MoneybirdService::class);
-    $service->setConnection($connection);
-
-    $resource = $service->webhooks();
-
-    expect($resource)->toBeInstanceOf(\Emeq\Moneybird\Resources\WebhookResource::class);
-});
-
 it('refreshes tokens when connection needs refresh', function () {
     $connection = MoneybirdConnection::create([
         'user_id'           => 1,
